@@ -37,12 +37,10 @@ const External = styled(ExternalIcon, {
   right: 0,
   transform: 'translate(100%, -100%)',
   position: 'absolute',
-  height: 15,
-  width: 15,
+  heightWidth: 15,
   fill: '$tertiary',
   '@tablet': {
-    height: 20,
-    width: 20,
+    heightWidth: 20,
   },
 })
 

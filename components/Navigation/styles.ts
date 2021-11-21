@@ -33,14 +33,12 @@ export const HomeLink = styled('a', {
 
 export const DoubleMusicalNote = styled(DoubleMusicalNoteIcon, {
   position: 'absolute',
-  height: 15,
-  width: 15,
+  heightWidth: 15,
   top: 0,
   right: 0,
   transform: 'translate(90%, -40%)',
   '@tablet': {
-    height: 30,
-    width: 30,
+    heightWidth: 30,
   },
 })
 

@@ -36,6 +36,10 @@ export const {
     },
   },
   utils: {
+    heightWidth: (value: number) => ({
+      height: value,
+      width: value,
+    }),
     marginX: (value: number) => ({
       marginLeft: value,
       marginRight: value,
