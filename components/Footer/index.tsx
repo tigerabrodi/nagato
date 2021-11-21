@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { toRem } from '@lib/helpers'
 import { styled } from 'stitches.config'
 import { ExternalIcon } from '@icons/External'
+import { HiddenText } from '@components/HiddenText'
 
 const FooterWrapper = styled('footer', {
   display: 'flex',
@@ -53,6 +54,7 @@ export const Footer = () => {
           <FooterLink target="_blank" rel="noopener noreferrer">
             Tiger Abrodi
             <External />
+            <HiddenText>(opens in a new tab)</HiddenText>
           </FooterLink>
         </Link>
       </FooterText>
