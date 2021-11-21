@@ -54,7 +54,7 @@ export const {
     }),
   },
   media: {
-    tablet: `(min-width: ${550 / 16}rem)`,
+    tablet: `(min-width: ${700 / 16}rem)`,
     laptop: `(min-width: ${1100 / 16}rem)`,
     desktop: `(min-width: ${1500 / 16}rem)`,
   },
