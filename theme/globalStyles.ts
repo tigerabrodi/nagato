@@ -38,4 +38,11 @@ export const globalStyles = globalCss({
     width: '100%',
     minHeight: '100%',
   },
+  main: {
+    minHeight: 'calc(100vh - 130px)',
+    width: '100%',
+    '@tablet': {
+      minHeight: 'calc(100vh - 190px)',
+    },
+  },
 })
