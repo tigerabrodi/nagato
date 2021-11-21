@@ -19,7 +19,8 @@
     "paths": {
       "@components/*": ["components/*"],
       "@lib/*": ["lib/*"],
-      "@theme/*": ["theme/*"]
+      "@theme/*": ["theme/*"],
+      "@icons/*": ["icons/*"]
     },
     "incremental": true
   },
