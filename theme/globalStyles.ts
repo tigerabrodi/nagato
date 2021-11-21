@@ -14,8 +14,32 @@ export const globalStyles = globalCss({
   },
   img: {
     display: 'block',
+    objectFit: 'cover',
+    objectPosition: 'center',
+  },
+  'a, button': {
+    cursor: 'pointer',
+    textDecoration: 'none',
+    border: 'none',
+    backgroundColor: 'transparent',
+  },
+  'input:focus, textarea:focus': {
+    outline: 'none',
+  },
+  'input::placeholder, textarea::placeholder': {
+    opacity: 0.7,
+    color: 'inherit',
+  },
+  textarea: {
+    border: 'none',
   },
   '#__next': {
     isolation: 'isolate',
+    /*     display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    flexDirection: 'column',
+    minHeight: '100%', */
+    width: '100%',
   },
 })
