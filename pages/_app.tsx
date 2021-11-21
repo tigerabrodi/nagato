@@ -1,3 +1,4 @@
+import { Footer } from '@components/Footer'
 import { Navigation } from '@components/Navigation'
 import { globalStyles } from '@theme/globalStyles'
 import { toastOptions } from '@theme/toastOptions'
@@ -10,6 +11,7 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     <>
       <Navigation />
       <Component {...pageProps} />
+      <Footer />
       <Toaster
         position="top-center"
         toastOptions={toastOptions}
