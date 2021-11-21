@@ -35,11 +35,7 @@ export const globalStyles = globalCss({
   },
   '#__next': {
     isolation: 'isolate',
-    /*     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    flexDirection: 'column',
-    minHeight: '100%', */
     width: '100%',
+    minHeight: '100%',
   },
 })
