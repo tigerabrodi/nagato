@@ -5,6 +5,7 @@ import {
   SignInLink,
   SignUpLink,
   LinksWrapper,
+  DoubleMusicalNote,
 } from './styles'
 
 export const Navigation = () => {
@@ -12,7 +13,10 @@ export const Navigation = () => {
     <NavigationContainer>
       <LinksWrapper>
         <NavLink href="/">
-          <HomeLink aria-label="Home">Nagato</HomeLink>
+          <HomeLink aria-label="Home">
+            Nagato
+            <DoubleMusicalNote />
+          </HomeLink>
         </NavLink>
         <NavLink href="/sign-in">
           <SignInLink>Sign In</SignInLink>

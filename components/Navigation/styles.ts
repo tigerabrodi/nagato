@@ -1,5 +1,6 @@
 import { toRem } from '@lib/helpers'
 import { styled } from 'stitches.config'
+import { DoubleMusicalNoteIcon } from '@icons/DoubleMusicalNote'
 
 export const NavigationContainer = styled('nav', {
   position: 'sticky',
@@ -24,8 +25,22 @@ export const HomeLink = styled('a', {
   color: '$secondary',
   fontWeight: '$semiBold',
   fontSize: toRem(25),
+  position: 'relative',
   '@tablet': {
     fontSize: toRem(42),
+  },
+})
+
+export const DoubleMusicalNote = styled(DoubleMusicalNoteIcon, {
+  position: 'absolute',
+  height: 15,
+  width: 15,
+  top: 0,
+  right: 0,
+  transform: 'translate(90%, -40%)',
+  '@tablet': {
+    height: 30,
+    width: 30,
   },
 })
 
