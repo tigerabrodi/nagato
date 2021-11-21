@@ -1,8 +1,6 @@
-export const DoubleMusicalNoteIcon = ({
-  className,
-}: {
-  className?: string
-}) => {
+import { Styleable } from '@lib/types'
+
+export const DoubleMusicalNoteIcon = ({ className }: Styleable) => {
   return (
     <svg
       fill="none"
