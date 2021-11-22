@@ -11,6 +11,7 @@ export const globalStyles = globalCss({
   },
   '*, *::before, *::after': {
     boxSizing: 'border-box',
+    margin: 0,
   },
   img: {
     display: 'block',
