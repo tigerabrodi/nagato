@@ -9,6 +9,12 @@ export const SROnlyStyles: CSS = {
   overflow: 'hidden',
 }
 
+export const focusStyles: CSS = {
+  outline: '2px solid white',
+  outlineOffset: '2px',
+  boxShadow: '0 0 0 6px black',
+}
+
 export const bump = keyframes({
   '60%': {
     transform: 'translateY(1px) scale(0.99)',
