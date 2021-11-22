@@ -36,7 +36,7 @@ export const {
     },
   },
   utils: {
-    heightWidth: (value: number) => ({
+    heightWidth: (value: number | `min(${string})`) => ({
       height: value,
       width: value,
     }),

@@ -21,6 +21,16 @@ const Main = styled('main', {
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'flex-start',
+  '@tablet': {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    columnGap: '100px',
+    padding: '0 20px',
+  },
+  '@desktop': {
+    columnGap: '20vw',
+  },
 })
 
 const Wrapper = styled('div', {
@@ -31,6 +41,9 @@ const Wrapper = styled('div', {
   '@mobileM': {
     marginTop: 30,
   },
+  '@tablet': {
+    marginTop: 80,
+  },
 })
 
 const Title = styled('h1', {
@@ -38,6 +51,10 @@ const Title = styled('h1', {
   color: '$secondary',
   fontWeight: '$bold',
   animation: fadeUpAnimation,
+  '@tablet': {
+    fontWeight: '$bold',
+    fontSize: toRem(100),
+  },
 })
 
 const Subtitle = styled('h2', {
@@ -47,6 +64,11 @@ const Subtitle = styled('h2', {
   marginTop: 15,
   animation: fadeUpAnimation,
   animationDelay: '0.25s',
+  '@tablet': {
+    marginTop: 25,
+    fontSize: toRem(36),
+    textAlign: 'center',
+  },
 })
 
 const Text = styled('p', {
@@ -68,6 +90,13 @@ const Text = styled('p', {
       marginTop: 35,
     },
   },
+  '@tablet': {
+    fontSize: toRem(30),
+    marginTop: 60,
+    '&:first-of-type': {
+      marginTop: 80,
+    },
+  },
 })
 
 const MusicalNote = styled(MusicalNoteIcon, {
@@ -81,6 +110,10 @@ const MusicalNote = styled(MusicalNoteIcon, {
   },
   '@mobileL': {
     marginTop: 60,
+  },
+  '@tablet': {
+    marginTop: 160,
+    heightWidth: 'min(350px, 29vw)',
   },
 })
 
