@@ -1,6 +1,20 @@
 import { MusicalNoteIcon } from '@icons/MusicalNote'
 import { toRem } from '@lib/helpers'
+import { keyframes } from '@stitches/react'
 import { styled } from 'stitches.config'
+
+const fadeUp = keyframes({
+  '0%': {
+    opacity: 0,
+    transform: 'translateY(20px)',
+  },
+  '100%': {
+    opacity: 1,
+    transform: 'translateY(0)',
+  },
+})
+
+const fadeUpAnimation = `${fadeUp} 0.3s ease-out both`
 
 const Main = styled('main', {
   display: 'flex',
@@ -23,6 +37,7 @@ const Title = styled('h1', {
   fontSize: '$mobileHeading',
   color: '$secondary',
   fontWeight: '$bold',
+  animation: fadeUpAnimation,
 })
 
 const Subtitle = styled('h2', {
@@ -30,6 +45,8 @@ const Subtitle = styled('h2', {
   fontSize: toRem(19),
   color: '$tertiary',
   marginTop: 15,
+  animation: fadeUpAnimation,
+  animationDelay: '0.25s',
 })
 
 const Text = styled('p', {
@@ -39,8 +56,11 @@ const Text = styled('p', {
   textAlign: 'center',
   marginTop: 10,
   color: '$tertiary',
+  animation: fadeUpAnimation,
+  animationDelay: '0.6s',
   '&:first-of-type': {
     marginTop: 20,
+    animationDelay: '0.45s',
   },
   '@mobileM': {
     marginTop: 20,
@@ -54,6 +74,8 @@ const MusicalNote = styled(MusicalNoteIcon, {
   heightWidth: 128,
   marginTop: 30,
   filter: 'drop-shadow(0 1px 2px white)',
+  animation: fadeUpAnimation,
+  animationDelay: '0.7s',
   '@mobileM': {
     marginTop: 45,
   },
