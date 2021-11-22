@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { Footer } from '@components/Footer'
 import { Navigation } from '@components/Navigation'
 import { globalStyles } from '@theme/globalStyles'
@@ -7,6 +8,13 @@ import { Toaster } from 'react-hot-toast'
 
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   globalStyles()
+
+  /* Calculate viewport height for mobile */
+  React.useEffect(() => {
+    let vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
+  }, [])
+
   return (
     <>
       <Navigation />
