@@ -4,6 +4,8 @@ import { useFormState } from 'hooks/useFormState'
 import { styled } from 'stitches.config'
 import toast from 'react-hot-toast'
 import { HiddenText } from '@components/HiddenText'
+import { EyeClosedIcon } from '@icons/EyeClosed'
+import { EyeOpenedIcon } from '@icons/EyeOpened'
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -149,7 +151,50 @@ const SubmitButton = styled('button', {
   },
 })
 
+const PasswordWrapper = styled('div')
+
+const ShowPasswordButton = styled('button', {
+  position: 'absolute',
+  right: 0,
+  bottom: 0,
+  lineHeight: 0,
+  '@tablet': {
+    '&:hover': {
+      path: {
+        fill: '$tertiary',
+      },
+    },
+  },
+})
+
+const pathStyles = {
+  path: {
+    transition: 'fill 0.2s ease-out',
+  },
+}
+
+const EyeClosed = styled(EyeClosedIcon, {
+  width: 20,
+  height: 19,
+  '@tablet': {
+    width: 32,
+    height: 31,
+    ...pathStyles,
+  },
+})
+
+const EyeOpened = styled(EyeOpenedIcon, {
+  width: 20,
+  height: 13,
+  '@tablet': {
+    width: 32,
+    height: 21,
+    ...pathStyles,
+  },
+})
+
 export const SignUp = () => {
+  const [shouldShowPassword, setShouldShowPassword] = React.useState(false)
   const {
     formState: { email, fullname, password },
     handleChange,
@@ -172,6 +217,9 @@ export const SignUp = () => {
     return 'Hello World'
   }
 
+  const toggleShouldShowPassword = () =>
+    setShouldShowPassword(!shouldShowPassword)
+
   return (
     <Main>
       <Wrapper>
@@ -187,6 +235,7 @@ export const SignUp = () => {
               onChange={(event) => handleChange(event)}
               name="fullname"
               value={fullname}
+              autoComplete="new-password"
             />
           </FormGroup>
           <FormGroup>
@@ -199,6 +248,7 @@ export const SignUp = () => {
               onChange={(event) => handleChange(event)}
               name="email"
               value={email}
+              autoComplete="new-password"
             />
             {isEmailError && (
               <EmailErrorMessage role="alert">
@@ -208,14 +258,35 @@ export const SignUp = () => {
           </FormGroup>
           <FormGroup>
             <Label htmlFor="password">Password*</Label>
-            <Input
-              onChange={(event) => handleChange(event)}
-              id="password"
-              type="password"
-              aria-required="true"
-              name="password"
-              value={password}
-            />
+            <PasswordWrapper css={{ position: 'relative', width: '100%' }}>
+              <Input
+                onChange={(event) => handleChange(event)}
+                id="password"
+                type={shouldShowPassword ? 'text' : 'password'}
+                aria-required="true"
+                name="password"
+                value={password}
+                autoComplete="new-password"
+              />
+              <ShowPasswordButton
+                aria-pressed={shouldShowPassword}
+                aria-label="Show password as plain text. Note: this will visually expose your password on the screen."
+                onClick={() => toggleShouldShowPassword()}
+                type="button"
+                css={{
+                  transform: shouldShowPassword
+                    ? 'translate(-13px, -4.5px)'
+                    : 'translate(-13px, -8px)',
+                  '@tablet': {
+                    transform: shouldShowPassword
+                      ? 'translate(-22px, -8.5px)'
+                      : 'translate(-22px, -13px)',
+                  },
+                }}
+              >
+                {shouldShowPassword ? <EyeClosed /> : <EyeOpened />}
+              </ShowPasswordButton>
+            </PasswordWrapper>
           </FormGroup>
           <SubmitButton
             type="submit"
