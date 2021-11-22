@@ -1,5 +1,12 @@
+import * as React from 'react'
 import { toRem } from '@lib/helpers'
+import { useFormState } from 'hooks/useFormState'
 import { styled } from 'stitches.config'
+import toast from 'react-hot-toast'
+import { HiddenText } from '@components/HiddenText'
+
+const EMAIL_REGEX =
+  /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
 const Main = styled('main', {
   display: 'flex',
@@ -143,11 +150,33 @@ const SubmitButton = styled('button', {
 })
 
 export const SignUp = () => {
+  const {
+    formState: { email, fullname, password },
+    handleChange,
+  } = useFormState({ fullname: '', email: '', password: '' })
+  const isAnyFieldEmpty = !fullname || !email || !password
+
+  const [isEmailError, setIsEmailError] = React.useState(false)
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    if (isAnyFieldEmpty) {
+      return toast.error('Please fill out all fields.')
+    }
+
+    if (!email.match(EMAIL_REGEX)) {
+      return setIsEmailError(true)
+    }
+
+    return 'Hello World'
+  }
+
   return (
     <Main>
       <Wrapper>
         <Heading>Sign Up</Heading>
-        <Form>
+        <Form onSubmit={handleSubmit} noValidate>
           <FormGroup>
             <Label htmlFor="fullname">Full Name*</Label>
             <Input
@@ -155,6 +184,9 @@ export const SignUp = () => {
               type="text"
               aria-required="true"
               placeholder="Naruto Uzumaki"
+              onChange={(event) => handleChange(event)}
+              name="fullname"
+              value={fullname}
             />
           </FormGroup>
           <FormGroup>
@@ -164,16 +196,39 @@ export const SignUp = () => {
               type="email"
               aria-required="true"
               placeholder="naruto@gmail.com"
+              onChange={(event) => handleChange(event)}
+              name="email"
+              value={email}
             />
-            <EmailErrorMessage role="alert">
-              Please enter a valid email.
-            </EmailErrorMessage>
+            {isEmailError && (
+              <EmailErrorMessage role="alert">
+                Please enter a valid email.
+              </EmailErrorMessage>
+            )}
           </FormGroup>
           <FormGroup>
             <Label htmlFor="password">Password*</Label>
-            <Input id="password" type="password" aria-required="true" />
+            <Input
+              onChange={(event) => handleChange(event)}
+              id="password"
+              type="password"
+              aria-required="true"
+              name="password"
+              value={password}
+            />
           </FormGroup>
-          <SubmitButton>Sign Up</SubmitButton>
+          <SubmitButton
+            type="submit"
+            aria-disabled={isAnyFieldEmpty}
+            aria-describedby="sign-up-button-disabled-message"
+          >
+            Sign Up
+          </SubmitButton>{' '}
+          {isAnyFieldEmpty && (
+            <HiddenText id="sign-up-button-disabled-message">
+              Disabled since all form fields have not been filled.
+            </HiddenText>
+          )}
         </Form>
       </Wrapper>
     </Main>
