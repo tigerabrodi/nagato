@@ -58,6 +58,10 @@ export const {
     }),
   },
   media: {
+    noReducedMotion: '(prefers-reduced-motion: no-preference)',
+    mobileM: `(min-width: ${360 / 16}rem)`,
+    mobileL: `(min-width: ${375 / 16}rem)`,
+    mobileXL: `(min-width: ${400 / 16}rem)`,
     tablet: `(min-width: ${700 / 16}rem)`,
     laptop: `(min-width: ${1100 / 16}rem)`,
     desktop: `(min-width: ${1500 / 16}rem)`,
