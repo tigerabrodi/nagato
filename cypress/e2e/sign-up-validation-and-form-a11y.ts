@@ -38,6 +38,18 @@ it('Should should be accessible', () => {
     'aria-disabled',
     'false'
   )
+
+  // Password should be hidden by default
+  cy.findByLabelText('Password*').should("have.attr", "type", "password")
+  cy.findByRole('button', {
+    name: 'Show password as plain text. Note: this will visually expose your password on the screen.',
+  }).should("have.attr", "aria-pressed", "false").click()
+
+  // Password should be visible
+  cy.findByLabelText('Password*').should("have.attr", "type", "text")
+  cy.findByRole('button', {
+    name: 'Show password as plain text. Note: this will visually expose your password on the screen.',
+  }).should("have.attr", "aria-pressed", "true")
 })
 
 it('Should show error toast when trying to submit any empty fields.', () => {
