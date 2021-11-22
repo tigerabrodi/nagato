@@ -28,8 +28,8 @@ export const {
       bold: 700,
     },
     fontSizes: {
-      mobileHeading: `${40 / 16}rem`,
-      desktopHeading: `${80 / 16}rem`,
+      mobileHeading: `${42 / 16}rem`,
+      desktopHeading: `${82 / 16}rem`,
     },
     fonts: {
       Inter: '"Inter", sans-serif',
