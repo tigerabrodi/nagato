@@ -63,7 +63,7 @@ export const SignUpLink = styled('a', {
   color: '$primary',
   backgroundColor: '$secondary',
   fontWeight: '$semiBold',
-  padding: '4px 6px',
+  padding: '5px 8px',
   fontSize: toRem(16),
   boxShadow: '$shadowElevationMedium',
   '@tablet': {
