@@ -1,4 +1,5 @@
 import { globalCss } from 'stitches.config'
+import { focusStyles } from './shared'
 
 export const globalStyles = globalCss({
   '@import':
@@ -23,6 +24,10 @@ export const globalStyles = globalCss({
     textDecoration: 'none',
     border: 'none',
     backgroundColor: 'transparent',
+  },
+  'a:focus-visible, button:focus-visible': {
+    transition: 'outline 0.1s, outline-offset 0.1s, box-shadow 0.1s',
+    ...focusStyles,
   },
   'input:focus, textarea:focus': {
     outline: 'none',
