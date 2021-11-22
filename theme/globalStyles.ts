@@ -28,10 +28,10 @@ export const globalStyles = globalCss({
     outline: 'none',
   },
   'input::placeholder, textarea::placeholder': {
-    opacity: 0.7,
+    fontStyle: 'italic',
     color: 'inherit',
   },
-  textarea: {
+  'textarea, input': {
     border: 'none',
   },
   '#__next': {
