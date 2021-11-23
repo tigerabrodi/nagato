@@ -226,8 +226,6 @@ export const SignUp = () => {
       },
       {
         data: {
-          fullname,
-          tasteOfMusic: '',
           avatarUrl: '',
         },
       }
