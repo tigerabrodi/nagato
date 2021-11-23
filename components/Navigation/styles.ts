@@ -16,7 +16,7 @@ export const NavigationContainer = styled('nav', {
   alignItems: 'center',
   width: '100%',
   borderBottom: '3px solid $secondary',
-  boxShadow: '$shadowElevationLow',
+  boxShadow: '0 0px 5px black',
   paddingX: 20,
   '@tablet': {
     paddingX: 80,
