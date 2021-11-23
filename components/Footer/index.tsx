@@ -12,7 +12,7 @@ const FooterWrapper = styled('footer', {
   height: 70,
   borderTop: '3px solid $secondary',
   backgroundColor: '$primary',
-  boxShadow: '0 -1px 3px black',
+  boxShadow: 'black 0px 10px 30px',
   '@tablet': {
     height: 90,
   },
