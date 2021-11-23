@@ -1,5 +1,4 @@
 import { supabase } from '@lib/client'
-import { styled } from 'stitches.config'
 import { useUserContext } from '@lib/userContext'
 import { NavLink } from './NavLink'
 import { User as SupaUser } from '@supabase/gotrue-js'
@@ -13,11 +12,15 @@ import {
   SignUpLink,
   LinksWrapper,
   DoubleMusicalNote,
+  Dance,
+  SignOutButton,
+  JoinRoomButton,
+  AvatarLink,
+  AvatarImage,
+  Door,
+  ButtonText,
 } from './styles'
-
-const AvatarLink = styled('a', {})
-
-const AvatarImage = styled('img', {})
+import toast from 'react-hot-toast'
 
 type User =
   | (SupaUser & {
@@ -37,6 +40,11 @@ export const Navigation = () => {
       ? `${DefaultAvatar2x.src} 300w, ${DefaultAvatar3x.src} 768w, ${DefaultAvatar4x.src} 1280w`
       : undefined
 
+  const signOut = () => {
+    supabase.auth.signOut()
+    toast.success('You have successfully signed out!')
+  }
+
   return (
     <NavigationContainer>
       <LinksWrapper>
@@ -48,6 +56,14 @@ export const Navigation = () => {
                 <DoubleMusicalNote />
               </HomeLink>
             </NavLink>
+            <JoinRoomButton>
+              <ButtonText>Join Room</ButtonText>
+              <Dance />
+            </JoinRoomButton>
+            <SignOutButton onClick={() => signOut()}>
+              <ButtonText>Sign Out</ButtonText>
+              <Door />
+            </SignOutButton>
             <NavLink href={`/profile/${user.id}`}>
               <AvatarLink aria-label="To Profile">
                 <AvatarImage

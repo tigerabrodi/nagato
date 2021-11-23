@@ -1,6 +1,10 @@
 import { toRem } from '@lib/helpers'
 import { styled } from 'stitches.config'
 import { DoubleMusicalNoteIcon } from '@icons/DoubleMusicalNote'
+import { DanceIcon } from '@icons/Dance'
+import { CSS } from '@stitches/react'
+import { DoorIcon } from '@icons/Door'
+import { SROnlyStyles } from '@theme/shared'
 
 export const NavigationContainer = styled('nav', {
   position: 'sticky',
@@ -18,6 +22,12 @@ export const NavigationContainer = styled('nav', {
     paddingX: 80,
     height: 100,
     borderWidth: 5,
+  },
+  '@laptop': {
+    paddingX: 90,
+  },
+  '@desktop': {
+    paddingX: 110,
   },
 })
 
@@ -81,4 +91,118 @@ export const LinksWrapper = styled('div', {
   display: 'flex',
   alignItems: 'flex-end',
   width: '100%',
+})
+
+export const AvatarLink = styled('a', {
+  heightWidth: 40,
+  marginLeft: 'auto',
+  backgroundColor: '$secondary',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  boxShadow: '$shadowElevationLow',
+  '@tablet': {
+    heightWidth: 70,
+    marginLeft: 'revert',
+  },
+})
+
+export const AvatarImage = styled('img', {
+  width: 35,
+  '@tablet': {
+    width: 60,
+  },
+})
+
+const commonMobileButtonStyles: CSS = {
+  heightWidth: 50,
+  position: 'fixed',
+  bottom: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '$secondary',
+  boxShadow: '$shadowElevationLow',
+}
+
+const commonLargeButtonStyles: CSS = {
+  '@tablet': {
+    boxShadow: '0 1px 3px black',
+    width: 140,
+    height: 50,
+    justifyContent: 'space-evenly',
+    position: 'revert',
+    transform: 'revert',
+  },
+  '@laptop': {
+    width: 200,
+    height: 53,
+  },
+}
+
+export const JoinRoomButton = styled('button', {
+  ...commonMobileButtonStyles,
+  transform: 'translate(24px, -24px)',
+  left: 0,
+  '@tablet': {
+    ...commonLargeButtonStyles,
+    left: 'revert',
+    marginLeft: 'auto',
+  },
+})
+
+export const SignOutButton = styled('button', {
+  ...commonMobileButtonStyles,
+  transform: 'translate(-24px, -24px)',
+  right: 0,
+  '@tablet': {
+    ...commonLargeButtonStyles,
+    right: 'revert',
+    marginLeft: 40,
+    marginRight: 60,
+  },
+  '@laptop': {
+    marginLeft: 50,
+    marginRight: 110,
+  },
+  '@desktop': {
+    marginLeft: 100,
+    marginRight: 200,
+  },
+})
+
+const commonIconStyles: CSS = {
+  heightWidth: 40,
+  '@tablet': {
+    heightWidth: 35,
+    backgroundColor: '$primary',
+    padding: 5,
+    path: {
+      fill: '$secondary',
+    },
+  },
+  '@laptop': {
+    heightWidth: 40,
+  },
+}
+
+export const Dance = styled(DanceIcon, {
+  ...commonIconStyles,
+})
+
+export const Door = styled(DoorIcon, {
+  ...commonIconStyles,
+})
+
+export const ButtonText = styled('span', {
+  ...SROnlyStyles,
+  '@tablet': {
+    all: 'revert',
+    color: '$primary',
+    fontWeight: '$semiBold',
+    fontSize: toRem(18),
+  },
+  '@laptop': {
+    fontSize: toRem(21),
+  },
 })
