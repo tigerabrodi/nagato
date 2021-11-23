@@ -3,6 +3,9 @@ import { styled } from 'stitches.config'
 import { useUserContext } from '@lib/userContext'
 import { NavLink } from './NavLink'
 import { User as SupaUser } from '@supabase/gotrue-js'
+import DefaultAvatar2x from '@assets/DefaultAvatar2x.jpg'
+import DefaultAvatar3x from '@assets/DefaultAvatar3x.jpg'
+import DefaultAvatar4x from '@assets/DefaultAvatar3x.jpg'
 import {
   HomeLink,
   NavigationContainer,
@@ -12,18 +15,17 @@ import {
   DoubleMusicalNote,
 } from './styles'
 
-const DEFAULT_AVATAR = '/public/assets/DefaultAvatar'
-const JPG_EXTENSION = '.jpg'
-
 const AvatarLink = styled('a', {})
 
 const AvatarImage = styled('img', {})
 
-type User = SupaUser & {
-  user_metadata: {
-    avatarUrl: string
-  }
-}
+type User =
+  | (SupaUser & {
+      user_metadata: {
+        avatarUrl: string
+      }
+    })
+  | null
 
 export const Navigation = () => {
   const { isAuthenticated } = useUserContext()
@@ -31,8 +33,8 @@ export const Navigation = () => {
   const user = supabase.auth.user() as User
 
   const imageSrcSet =
-    user.user_metadata.avatarUrl === ''
-      ? `${DEFAULT_AVATAR}2x${JPG_EXTENSION} 300w, ${DEFAULT_AVATAR}3x${JPG_EXTENSION} 768w, ${DEFAULT_AVATAR}4x${JPG_EXTENSION} 1280w`
+    user?.user_metadata.avatarUrl === ''
+      ? `${DefaultAvatar2x.src} 300w, ${DefaultAvatar3x.src} 768w, ${DefaultAvatar4x.src} 1280w`
       : undefined
 
   return (
@@ -52,7 +54,7 @@ export const Navigation = () => {
                   src={
                     user.user_metadata.avatarUrl !== ''
                       ? user.user_metadata.avatarUrl
-                      : `${DEFAULT_AVATAR}2x${JPG_EXTENSION}`
+                      : DefaultAvatar2x.src
                   }
                   srcSet={imageSrcSet}
                   alt=""

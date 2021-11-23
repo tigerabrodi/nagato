@@ -20,7 +20,8 @@
       "@components/*": ["components/*"],
       "@lib/*": ["lib/*"],
       "@theme/*": ["theme/*"],
-      "@icons/*": ["icons/*"]
+      "@icons/*": ["icons/*"],
+      "@assets/*": ["assets/*"]
     },
     "incremental": true
   },
