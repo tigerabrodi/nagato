@@ -1,6 +1,7 @@
 import { MusicalNoteIcon } from '@icons/MusicalNote'
 import { toRem } from '@lib/helpers'
 import { keyframes } from '@stitches/react'
+import { useRedirectAuthUsers } from 'hooks/useRedirectAuthUsers'
 import { styled } from 'stitches.config'
 
 const fadeUp = keyframes({
@@ -117,22 +118,25 @@ const MusicalNote = styled(MusicalNoteIcon, {
   },
 })
 
-export const LandingPage = () => (
-  <Main>
-    <Wrapper>
-      <Title>Nagato</Title>
-      <Subtitle>Listen to music with friends.</Subtitle>
-      <Text>
-        A place where you can vibe with others. Create a room and have your
-        friends join the it.
-      </Text>
-      <Text>
-        Perfect when studying together, pair programming, chilling or anything
-        else!
-      </Text>
-    </Wrapper>
-    <MusicalNote />
-  </Main>
-)
+export const LandingPage = () => {
+  useRedirectAuthUsers()
+  return (
+    <Main>
+      <Wrapper>
+        <Title>Nagato</Title>
+        <Subtitle>Listen to music with friends.</Subtitle>
+        <Text>
+          A place where you can vibe with others. Create a room and have your
+          friends join the it.
+        </Text>
+        <Text>
+          Perfect when studying together, pair programming, chilling or anything
+          else!
+        </Text>
+      </Wrapper>
+      <MusicalNote />
+    </Main>
+  )
+}
 
 export default LandingPage
