@@ -127,12 +127,25 @@ const commonMobileButtonStyles: CSS = {
 
 const commonLargeButtonStyles: CSS = {
   '@tablet': {
-    boxShadow: '0 1px 3px black',
+    boxShadow: '0 2px 3px black',
     width: 140,
     height: 50,
     justifyContent: 'space-evenly',
     position: 'revert',
     transform: 'revert',
+    transition: 'all 0.2s ease-out',
+    '&:hover': {
+      backgroundColor: '$tertiary',
+      transform: 'translateY(-2px)',
+      path: {
+        fill: '$tertiary',
+      },
+    },
+    '&:active': {
+      transition: 'all 0.1s ease-out',
+      transform: 'translateY(0) scale(0.99)',
+      boxShadow: '0 1px 3px black',
+    },
   },
   '@laptop': {
     width: 200,
@@ -179,6 +192,7 @@ const commonIconStyles: CSS = {
     padding: 5,
     path: {
       fill: '$secondary',
+      transition: 'fill 0.2s',
     },
   },
   '@laptop': {
