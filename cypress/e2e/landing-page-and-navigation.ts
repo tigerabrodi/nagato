@@ -4,7 +4,7 @@ beforeEach(() => {
 })
 
 it('Should show home page, footer, navigation and be accessible', () => {
-  cy.findByRole('link', { name: 'Home' }).should(
+  cy.findByRole('link', { name: 'To Landing Page' }).should(
     'have.attr',
     'aria-current',
     'page'
