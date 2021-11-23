@@ -6,6 +6,9 @@ import toast from 'react-hot-toast'
 import { HiddenText } from '@components/HiddenText'
 import { EyeClosedIcon } from '@icons/EyeClosed'
 import { EyeOpenedIcon } from '@icons/EyeOpened'
+import { supabase } from '@lib/client'
+import { useRouter } from 'next/router'
+import { useRedirectAuthUsers } from 'hooks/useRedirectAuthUsers'
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -194,6 +197,8 @@ const EyeOpened = styled(EyeOpenedIcon, {
 })
 
 export const SignUp = () => {
+  useRedirectAuthUsers()
+  const router = useRouter()
   const [shouldShowPassword, setShouldShowPassword] = React.useState(false)
   const {
     formState: { email, fullname, password },
@@ -203,7 +208,7 @@ export const SignUp = () => {
 
   const [isEmailError, setIsEmailError] = React.useState(false)
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     if (isAnyFieldEmpty) {
@@ -214,7 +219,25 @@ export const SignUp = () => {
       return setIsEmailError(true)
     }
 
-    return 'Hello World'
+    const { error, user } = await supabase.auth.signUp(
+      {
+        email,
+        password,
+      },
+      {
+        data: {
+          fullname,
+          tasteOfMusic: '',
+          avatarUrl: '',
+        },
+      }
+    )
+
+    if (error) {
+      return toast.error(error.message)
+    }
+
+    router.push(`/profile/${user!.id}/edit`)
   }
 
   const toggleShouldShowPassword = () =>
