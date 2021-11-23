@@ -9,6 +9,7 @@ import { EyeOpenedIcon } from '@icons/EyeOpened'
 import { supabase } from '@lib/client'
 import { useRouter } from 'next/router'
 import { useRedirectAuthUsers } from 'hooks/useRedirectAuthUsers'
+import { User } from '@lib/types'
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -231,11 +232,28 @@ export const SignUp = () => {
       }
     )
 
-    if (error) {
-      return toast.error(error.message)
-    }
+    if (error) return toast.error(error.message)
 
-    router.push(`/profile/${user!.id}/edit`)
+    if (user) {
+      const { error } = await supabase
+        .from('users')
+        .insert([
+          {
+            fullname,
+            email,
+            userId: user.id,
+            avatarUrl: '',
+            roomId: '',
+            tasteOfMusic: '',
+          } as User,
+        ])
+        .single()
+
+      if (error) return toast.error('Email is already taken.')
+
+      toast.success(`Congrats ${fullname}, you successfully signed up!`)
+      router.push(`/profile/${user.id}/edit`)
+    }
   }
 
   const toggleShouldShowPassword = () =>
