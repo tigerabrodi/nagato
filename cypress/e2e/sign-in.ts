@@ -26,7 +26,7 @@ it('Should not sign in if anything goes wrong such as password', () => {
   cy.findByText('Email or password is invalid.').should('exist')
 })
 
-it('Should be able to login.', () => {
+it('Should be able to login and sign out.', () => {
   cy.findByLabelText('Email*').type(narutoTestUser.email)
   cy.findByLabelText('Password*').type(narutoTestUser.password)
 
@@ -35,4 +35,12 @@ it('Should be able to login.', () => {
   cy.findByText('You have successfully signed in!').should('exist')
 
   cy.findByRole('heading', { level: 1, name: 'Rooms' }).should('exist')
+
+  cy.findByRole('button', { name: 'Join Room' }).should('exist')
+  cy.findByRole('link', { name: 'To Profile' }).should('exist')
+
+  cy.findByRole('button', { name: 'Sign Out' }).click()
+
+  cy.findByText('You have successfully signed out!').should('exist')
+  cy.findByRole('heading', { level: 1, name: 'Nagato' }).should('exist')
 })
