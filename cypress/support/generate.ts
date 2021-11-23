@@ -27,3 +27,10 @@ export const buildRoom = build<Room>('Room', {
     typeOfMusic: fake((f) => f.random.words(5)),
   },
 })
+
+export const narutoTestUser = {
+  fullname: 'naruto',
+  email: 'naruto@gmail.com',
+  password: 'naruto123',
+  tasteOfMusic: 'I like listening to sad and relaxing anime soundtracks.',
+}

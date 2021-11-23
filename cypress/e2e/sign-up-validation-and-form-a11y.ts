@@ -1,4 +1,4 @@
-import { buildUser } from '../support/generate'
+import { buildUser, narutoTestUser } from '../support/generate'
 
 beforeEach(() => {
   indexedDB.deleteDatabase('firebaseLocalStorageDb')
@@ -75,4 +75,12 @@ it('Should display error message if email is not a valid email.', () => {
   cy.findByText('Please enter a valid email.').should('exist')
 })
 
-// TODO Test that email is already taken.
+it('Should not be able to sign up with an existing email.', () => {
+  cy.findByLabelText('Full Name*').type(narutoTestUser.fullname)
+  cy.findByLabelText('Password*').type(narutoTestUser.password)
+  cy.findByLabelText('Email*').type(narutoTestUser.email)
+
+  cy.findByRole('button', { name: 'Sign Up' }).click()
+
+  cy.findByText('Email is already taken.').should('exist')
+})
