@@ -25,3 +25,11 @@ export const bump = keyframes({
 })
 
 export const bumpingAnimation = `${bump} 0.4s infinite alternate ease-out`
+
+export const commonButtonActiveStyles: CSS = {
+  '&:active': {
+    transition: 'all 0.1s ease-out',
+    transform: 'translateY(0) scale(0.99)',
+    boxShadow: '0 1px 3px black',
+  },
+}

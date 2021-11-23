@@ -4,7 +4,7 @@ import { DoubleMusicalNoteIcon } from '@icons/DoubleMusicalNote'
 import { DanceIcon } from '@icons/Dance'
 import { CSS } from '@stitches/react'
 import { DoorIcon } from '@icons/Door'
-import { SROnlyStyles } from '@theme/shared'
+import { commonButtonActiveStyles, SROnlyStyles } from '@theme/shared'
 
 export const NavigationContainer = styled('nav', {
   position: 'sticky',
@@ -150,11 +150,7 @@ const commonLargeButtonStyles: CSS = {
         fill: '$tertiary',
       },
     },
-    '&:active': {
-      transition: 'all 0.1s ease-out',
-      transform: 'translateY(0) scale(0.99)',
-      boxShadow: '0 1px 3px black',
-    },
+    ...commonButtonActiveStyles,
   },
   '@laptop': {
     width: 200,

@@ -2,6 +2,7 @@ import { toRem } from '@lib/helpers'
 import { styled } from 'stitches.config'
 import { EyeClosedIcon } from '@icons/EyeClosed'
 import { EyeOpenedIcon } from '@icons/EyeOpened'
+import { commonButtonActiveStyles } from './shared'
 
 export const Main = styled('main', {
   display: 'flex',
@@ -125,11 +126,7 @@ export const SubmitButton = styled('button', {
       transform: 'translateY(-3px)',
       boxShadow: '0 2px 6px black',
     },
-    '&:active': {
-      transition: 'all 0.1s ease-out',
-      transform: 'translateY(0) scale(0.99)',
-      boxShadow: '0 1px 3px black',
-    },
+    ...commonButtonActiveStyles,
   },
 })
 
