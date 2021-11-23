@@ -26,7 +26,7 @@ const Main = styled('main', {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'flex-start',
-    columnGap: '100px',
+    columnGap: 100,
     padding: '0 20px',
   },
   '@desktop': {

@@ -11,7 +11,7 @@ export const SROnlyStyles: CSS = {
 
 export const focusStyles: CSS = {
   outline: '2px solid white',
-  outlineOffset: '2px',
+  outlineOffset: 2,
   boxShadow: '0 0 0 6px black',
 }
 
