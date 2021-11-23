@@ -5,10 +5,13 @@ import { globalStyles } from '@theme/globalStyles'
 import { toastOptions } from '@theme/toastOptions'
 import type { AppProps } from 'next/app'
 import { Toaster } from 'react-hot-toast'
+import { UserContext } from '@lib/userContext'
+import { useAuth } from 'hooks/useAuth'
 
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
-  globalStyles()
+  const { isAuthenticated } = useAuth()
 
+  globalStyles()
   /* Calculate viewport height for mobile */
   React.useEffect(() => {
     function handleResize() {
@@ -21,7 +24,7 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   }, [])
 
   return (
-    <>
+    <UserContext.Provider value={{ isAuthenticated }}>
       <Navigation />
       <Component {...pageProps} />
       <Footer />
@@ -30,6 +33,6 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         toastOptions={toastOptions}
         containerStyle={{ top: 50 }}
       />
-    </>
+    </UserContext.Provider>
   )
 }
