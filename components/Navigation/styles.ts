@@ -104,6 +104,15 @@ export const AvatarLink = styled('a', {
   '@tablet': {
     heightWidth: 70,
     marginLeft: 'revert',
+    '@tablet': {
+      boxShadow: '0 2px 3px black',
+      transition: 'all 0.3s ease-out',
+      '&:hover': {
+        transition: 'all 0.15s ease-out',
+        transform: 'translateY(-2px)',
+        boxShadow: '0 3px 4px black',
+      },
+    },
   },
 })
 
