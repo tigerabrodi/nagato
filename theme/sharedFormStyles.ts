@@ -90,7 +90,6 @@ export const Input = styled('input', {
   marginTop: 10,
   fontWeight: '$medium',
   fontSize: toRem(14),
-  transition: 'box-shadow 0.1s',
   '@tablet': {
     height: 50,
     fontSize: toRem(22),

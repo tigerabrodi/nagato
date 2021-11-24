@@ -40,6 +40,7 @@ export const globalStyles = globalCss({
   },
   'textarea, input': {
     border: 'none',
+    transition: 'box-shadow 0.1s',
   },
   '#__next': {
     isolation: 'isolate',
