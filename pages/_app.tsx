@@ -8,9 +8,12 @@ import { Toaster } from 'react-hot-toast'
 import { UserContext } from '@lib/userContext'
 import { useAuth } from 'hooks/useAuth'
 import { Spinner } from '@components/Spinner'
+import { useLoadingStore } from '@components/Spinner/store'
 
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const { isAuthenticated } = useAuth()
+
+  const { status } = useLoadingStore()
 
   globalStyles()
   /* Calculate viewport height for mobile */
@@ -27,7 +30,7 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <UserContext.Provider value={{ isAuthenticated }}>
       <Navigation />
-      <Spinner />
+      {status === 'loading' && <Spinner />}
       <Component {...pageProps} />
       <Footer />
       <Toaster
