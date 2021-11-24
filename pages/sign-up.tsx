@@ -22,6 +22,7 @@ import { supabase } from '@lib/client'
 import { useRouter } from 'next/router'
 import { useRedirectAuthUsers } from 'hooks/useRedirectAuthUsers'
 import { User } from '@lib/types'
+import { useLoadingStore } from '@components/Spinner/store'
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -40,23 +41,27 @@ const EmailErrorMessage = styled('span', {
 export const SignUp = () => {
   useRedirectAuthUsers()
   const router = useRouter()
+  const { setStatus } = useLoadingStore()
   const [shouldShowPassword, setShouldShowPassword] = React.useState(false)
   const {
     formState: { email, fullname, password },
     handleChange,
   } = useFormState({ fullname: '', email: '', password: '' })
-  const isAnyFieldEmpty = !fullname || !email || !password
 
+  const isAnyFieldEmpty = !fullname || !email || !password
   const [isEmailError, setIsEmailError] = React.useState(false)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setStatus('loading')
 
     if (isAnyFieldEmpty) {
+      setStatus('error')
       return toast.error('Please fill out all fields.')
     }
 
     if (!email.match(EMAIL_REGEX)) {
+      setStatus('error')
       return setIsEmailError(true)
     }
 
@@ -72,7 +77,10 @@ export const SignUp = () => {
       }
     )
 
-    if (error) return toast.error(error.message)
+    if (error) {
+      setStatus('error')
+      return toast.error(error.message)
+    }
 
     if (user) {
       const { error } = await supabase
@@ -89,9 +97,13 @@ export const SignUp = () => {
         ])
         .single()
 
-      if (error) return toast.error('Email is already taken.')
+      if (error) {
+        setStatus('error')
+        return toast.error('Email is already taken.')
+      }
 
       toast.success(`Congrats ${fullname}, you successfully signed up!`)
+      setStatus('success')
       router.push(`/profile/${user.id}/edit`)
     }
   }
