@@ -26,7 +26,7 @@ it('Should not sign in if anything goes wrong such as password', () => {
   cy.findByText('Email or password is invalid.').should('exist')
 })
 
-it.only('Should be able to login and sign out.', () => {
+it('Should be able to login and sign out.', () => {
   cy.findByLabelText('Email*').type(narutoTestUser.email)
   cy.findByLabelText('Password*').type(narutoTestUser.password)
 
