@@ -33,4 +33,6 @@ export const narutoTestUser = {
   email: 'naruto@gmail.com',
   password: 'naruto123',
   tasteOfMusic: 'I like listening to sad and relaxing anime soundtracks.',
+  roomTitle: 'Anime Vibes',
+  roomTypeOfMusic: 'Relaxing and sad anime soundtracks.',
 }
