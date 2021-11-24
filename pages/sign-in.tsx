@@ -45,12 +45,12 @@ export const SignIn = () => {
       return toast.error('Please fill out both fields.')
     }
 
-    const { error } = await supabase.auth.signIn({
+    const { error: signInError } = await supabase.auth.signIn({
       email,
       password,
     })
 
-    if (error) {
+    if (signInError) {
       setStatus('error')
       return toast.error('Email or password is invalid.')
     }
