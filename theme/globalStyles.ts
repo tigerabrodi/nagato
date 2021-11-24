@@ -32,6 +32,7 @@ export const globalStyles = globalCss({
   },
   'input:focus, textarea:focus': {
     outline: 'none',
+    boxShadow: '$shadowMedium',
   },
   'input::placeholder, textarea::placeholder': {
     fontStyle: 'italic',
