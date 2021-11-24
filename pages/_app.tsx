@@ -7,6 +7,7 @@ import type { AppProps } from 'next/app'
 import { Toaster } from 'react-hot-toast'
 import { UserContext } from '@lib/userContext'
 import { useAuth } from 'hooks/useAuth'
+import { Spinner } from '@components/Spinner'
 
 export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const { isAuthenticated } = useAuth()
@@ -26,6 +27,7 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <UserContext.Provider value={{ isAuthenticated }}>
       <Navigation />
+      <Spinner />
       <Component {...pageProps} />
       <Footer />
       <Toaster
