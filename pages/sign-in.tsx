@@ -19,10 +19,12 @@ import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import { supabase } from '@lib/client'
 import { HiddenText } from '@components/HiddenText'
+import { useLoadingStore } from '@components/Spinner/store'
 
 export const SignIn = () => {
   useRedirectAuthUsers()
   const router = useRouter()
+  const { setStatus } = useLoadingStore()
   const [shouldShowPassword, setShouldShowPassword] = React.useState(false)
   const {
     formState: { email, password },
@@ -36,8 +38,10 @@ export const SignIn = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setStatus('loading')
 
     if (isAnyFieldEmpty) {
+      setStatus('error')
       return toast.error('Please fill out both fields.')
     }
 
@@ -46,9 +50,13 @@ export const SignIn = () => {
       password,
     })
 
-    if (error) return toast.error('Email or password is invalid.')
+    if (error) {
+      setStatus('error')
+      return toast.error('Email or password is invalid.')
+    }
 
     toast.success('You have successfully signed in!')
+    setStatus('success')
     router.push('/rooms')
   }
 
