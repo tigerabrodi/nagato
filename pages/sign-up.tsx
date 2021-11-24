@@ -60,30 +60,33 @@ export const SignUp = () => {
       return toast.error('Please fill out all fields.')
     }
 
-    if (!email.match(EMAIL_REGEX)) {
+    const isEmailNotMatching = !email.match(EMAIL_REGEX)
+    if (isEmailNotMatching) {
       setStatus('error')
       return setIsEmailError(true)
     }
 
-    const { error, user } = await supabase.auth.signUp(
+    const userMetaData = {
+      data: {
+        avatarUrl: '',
+      },
+    }
+
+    const { error: signUpError, user } = await supabase.auth.signUp(
       {
         email,
         password,
       },
-      {
-        data: {
-          avatarUrl: '',
-        },
-      }
+      userMetaData
     )
 
-    if (error) {
+    if (signUpError) {
       setStatus('error')
-      return toast.error(error.message)
+      return toast.error(signUpError.message)
     }
 
     if (user) {
-      const { error } = await supabase
+      const { error: isEmailTakenAlready } = await supabase
         .from('users')
         .insert([
           {
@@ -97,7 +100,7 @@ export const SignUp = () => {
         ])
         .single()
 
-      if (error) {
+      if (isEmailTakenAlready) {
         setStatus('error')
         return toast.error('Email is already taken.')
       }
