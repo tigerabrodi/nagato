@@ -105,7 +105,7 @@ export const AvatarLink = styled('a', {
     heightWidth: 70,
     marginLeft: 'revert',
     '@tablet': {
-      boxShadow: '$shadowTabletMedium',
+      boxShadow: '$shadowMedium',
       transition: 'all 0.3s ease-out',
       '&:hover': {
         transition: 'all 0.15s ease-out',
@@ -136,7 +136,7 @@ const commonMobileButtonStyles: CSS = {
 
 const commonLargeButtonStyles: CSS = {
   '@tablet': {
-    boxShadow: '$shadowTabletMedium',
+    boxShadow: '$shadowMedium',
     width: 140,
     height: 50,
     justifyContent: 'space-evenly',

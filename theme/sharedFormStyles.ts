@@ -92,7 +92,7 @@ export const Input = styled('input', {
   fontSize: toRem(14),
   transition: 'box-shadow 0.1s',
   '&:focus': {
-    boxShadow: '0 1px 3px black',
+    boxShadow: '$shadowMedium',
   },
   '@tablet': {
     height: 50,
