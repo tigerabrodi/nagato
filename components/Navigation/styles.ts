@@ -160,7 +160,7 @@ const commonLargeButtonStyles: CSS = {
 
 export const JoinRoomButton = styled('button', {
   ...commonMobileButtonStyles,
-  transform: 'translate(24px, -24px)',
+  transform: 'translate(10px, -10px)',
   left: 0,
   '@tablet': {
     ...commonLargeButtonStyles,
@@ -171,7 +171,7 @@ export const JoinRoomButton = styled('button', {
 
 export const SignOutButton = styled('button', {
   ...commonMobileButtonStyles,
-  transform: 'translate(-24px, -24px)',
+  transform: 'translate(-10px, -10px)',
   right: 0,
   '@tablet': {
     ...commonLargeButtonStyles,
