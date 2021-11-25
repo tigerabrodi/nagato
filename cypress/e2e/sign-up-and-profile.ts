@@ -30,11 +30,12 @@ it('Should be able to sign up, go to their profile, and edit their profile.', ()
 
   // Avatar upload
   cy.findByLabelText('Upload Avatar').attachFile('naruto-face.jpg')
-  cy.findByRole('status', { name: 'loading' }).should('exist')
-  cy.findByText('Successfully uploaded your new avatar!').should('exist')
+  cy.findByText(
+    'Successfully uploaded your new avatar, save to keep the changes!'
+  ).should('exist')
 
   // Avatar should no longer be the default avatar.
-  cy.findByRole('img', { name: user.fullname }).should('exist')
+  cy.findByRole('img', { name: 'Avatar' }).should('exist')
 
   cy.findByLabelText('Taste of music').type(user.tasteOfMusic)
 
