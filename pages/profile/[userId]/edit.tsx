@@ -1,3 +1,4 @@
+import * as React from 'react'
 import DefaultAvatar2x from '@assets/DefaultAvatar2x.jpg'
 import DefaultAvatar3x from '@assets/DefaultAvatar3x.jpg'
 import DefaultAvatar4x from '@assets/DefaultAvatar4x.jpg'
@@ -9,6 +10,17 @@ import {
   commonButtonActiveStyles,
 } from '@theme/shared'
 import { styled } from 'stitches.config'
+import { useRouter } from 'next/router'
+import { supabase } from '@lib/client'
+import toast from 'react-hot-toast'
+import { useFormState } from 'hooks/useFormState'
+import { User } from '@lib/types'
+import { keyframes } from '@stitches/react'
+
+const fadeIn = keyframes({
+  '0%': { opacity: 0 },
+  '100%': { opacity: 1 },
+})
 
 const Main = styled('main', {
   display: 'flex',
@@ -31,6 +43,7 @@ const Form = styled('form', {
   backgroundColor: '$secondary',
   gridTemplateAreas:
     '"image image" "fullname fullname" "label label" "textarea textarea" "cancel save"',
+  animation: `${fadeIn} 1s ease-out both`,
   '@mobileM': {
     height: 470,
   },
@@ -196,19 +209,71 @@ const SaveButton = styled('button', {
   justifySelf: 'end',
 })
 
-export const ProfileEdit = () => {
+const ProfileEdit = () => {
+  const {
+    formState: { tasteOfMusic },
+    setFormState,
+    handleChange,
+  } = useFormState({ tasteOfMusic: '' })
+  const [user, setUser] = React.useState<User | null>(null)
+  const {
+    query: { userId },
+    push,
+  } = useRouter()
+
+  const currentAuthUser = supabase.auth.user()
+
+  React.useEffect(() => {
+    if (!currentAuthUser || !userId) return
+
+    /* TODO Write test for this later. */
+    if (currentAuthUser.id !== userId) {
+      push('/rooms')
+      toast.error("You don't have permission to edit this profile.")
+      return
+    }
+  }, [currentAuthUser, push, userId])
+
+  React.useEffect(() => {
+    const getAndSetUser = async () => {
+      if (user) return
+      if (currentAuthUser) {
+        const { data: userData } = await supabase
+          .from<User>('users')
+          .select('userId')
+          .match({ userId: currentAuthUser.id })
+          .single()
+        setUser(userData)
+      }
+    }
+    getAndSetUser()
+  }, [user, currentAuthUser])
+
+  React.useEffect(() => {
+    if (user) {
+      setFormState({
+        tasteOfMusic: user.tasteOfMusic,
+      })
+    }
+  }, [user, setFormState])
+
+  const currentAuthUserAvatar = currentAuthUser?.user_metadata.avatarUrl
   const imageSrcSet = `${DefaultAvatar2x.src} 300w, ${DefaultAvatar3x.src} 768w, ${DefaultAvatar4x.src} 1280w`
+  const imageAlt =
+    currentAuthUserAvatar !== '' && user ? user.fullname : 'Default Avatar'
+  const imageSrc =
+    currentAuthUserAvatar !== '' ? currentAuthUserAvatar : DefaultAvatar2x.src
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+  }
 
   return (
     <Main>
       <HiddenHeadingLevelOne>Edit your profile</HiddenHeadingLevelOne>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <ImageWrapper>
-          <Avatar
-            src={DefaultAvatar2x.src}
-            srcSet={imageSrcSet}
-            alt="Default Avatar"
-          />
+          <Avatar src={imageSrc} srcSet={imageSrcSet} alt={imageAlt} />
           <AvatarUploadHiddenInput
             type="file"
             id="upload"
@@ -228,8 +293,10 @@ export const ProfileEdit = () => {
         <TasteMusicLabel htmlFor="taste">Taste of music</TasteMusicLabel>
         <TasteMusicTextarea
           id="taste"
-          value="I like listening to relaxing anime music. Lofi is cool too, but gotta be relaxing a’ight."
+          value={tasteOfMusic}
+          name="textarea"
           spellCheck="false"
+          onChange={(event) => handleChange(event)}
         />
         <CancelButton type="button">Cancel</CancelButton>
         <SaveButton type="submit">Save</SaveButton>
