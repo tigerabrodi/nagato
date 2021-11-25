@@ -16,6 +16,7 @@ import { supabase } from '@lib/client'
 import toast from 'react-hot-toast'
 import { useFormState } from 'hooks/useFormState'
 import { User } from '@lib/types'
+import { useHasMounted } from 'hooks/useHasMounted'
 
 const Main = styled('main', {
   display: 'flex',
@@ -210,6 +211,7 @@ const ProfileEdit = () => {
     setFormState,
     handleChange,
   } = useFormState({ tasteOfMusic: '' })
+  const hasMounted = useHasMounted()
   const [user, setUser] = React.useState<User | null>(null)
   const {
     query: { userId },
@@ -262,6 +264,8 @@ const ProfileEdit = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
   }
+
+  if (!hasMounted) return null
 
   return (
     <Main>
