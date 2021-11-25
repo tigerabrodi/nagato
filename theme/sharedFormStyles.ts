@@ -2,7 +2,7 @@ import { toRem } from '@lib/helpers'
 import { styled } from 'stitches.config'
 import { EyeClosedIcon } from '@icons/EyeClosed'
 import { EyeOpenedIcon } from '@icons/EyeOpened'
-import { commonButtonActiveStyles } from './shared'
+import { commonButtonActiveStyles, fadeInAnimation } from './shared'
 
 export const Main = styled('main', {
   display: 'flex',
@@ -20,6 +20,7 @@ export const Wrapper = styled('div', {
   paddingY: 12,
   paddingX: 16,
   boxShadow: '$shadowElevationMedium',
+  animation: fadeInAnimation,
   '@mobileM': {
     height: 440,
   },

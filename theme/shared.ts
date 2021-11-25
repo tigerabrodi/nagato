@@ -33,3 +33,10 @@ export const commonButtonActiveStyles: CSS = {
     boxShadow: '0 1px 3px black',
   },
 }
+
+const fadeIn = keyframes({
+  '0%': { opacity: 0 },
+  '100%': { opacity: 1 },
+})
+
+export const fadeInAnimation = `${fadeIn} 0.75s ease-out both`

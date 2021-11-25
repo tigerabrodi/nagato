@@ -8,6 +8,7 @@ import {
   focusStyles,
   SROnlyStyles,
   commonButtonActiveStyles,
+  fadeInAnimation,
 } from '@theme/shared'
 import { styled } from 'stitches.config'
 import { useRouter } from 'next/router'
@@ -15,12 +16,6 @@ import { supabase } from '@lib/client'
 import toast from 'react-hot-toast'
 import { useFormState } from 'hooks/useFormState'
 import { User } from '@lib/types'
-import { keyframes } from '@stitches/react'
-
-const fadeIn = keyframes({
-  '0%': { opacity: 0 },
-  '100%': { opacity: 1 },
-})
 
 const Main = styled('main', {
   display: 'flex',
@@ -43,7 +38,7 @@ const Form = styled('form', {
   backgroundColor: '$secondary',
   gridTemplateAreas:
     '"image image" "fullname fullname" "label label" "textarea textarea" "cancel save"',
-  animation: `${fadeIn} 1s ease-out both`,
+  animation: fadeInAnimation,
   '@mobileM': {
     height: 470,
   },
