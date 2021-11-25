@@ -2,9 +2,6 @@ import { supabase } from '@lib/client'
 import { useUserContext } from '@lib/userContext'
 import { NavLink } from './NavLink'
 import { User as SupaUser } from '@supabase/gotrue-js'
-import DefaultAvatar2x from '@assets/DefaultAvatar2x.jpg'
-import DefaultAvatar3x from '@assets/DefaultAvatar3x.jpg'
-import DefaultAvatar4x from '@assets/DefaultAvatar3x.jpg'
 import {
   HomeLink,
   NavigationContainer,
@@ -21,6 +18,11 @@ import {
   ButtonText,
 } from './styles'
 import toast from 'react-hot-toast'
+import {
+  DefaultAvatar2x,
+  DefaultAvatar3x,
+  DefaultAvatar4x,
+} from '@theme/shared'
 
 type User =
   | (SupaUser & {
@@ -37,7 +39,7 @@ export const Navigation = () => {
 
   const imageSrcSet =
     user?.user_metadata.avatarUrl === ''
-      ? `${DefaultAvatar2x.src} 300w, ${DefaultAvatar3x.src} 768w, ${DefaultAvatar4x.src} 1280w`
+      ? `${DefaultAvatar2x} 300w, ${DefaultAvatar3x} 768w, ${DefaultAvatar4x} 1280w`
       : undefined
 
   const signOut = () => {
@@ -70,7 +72,7 @@ export const Navigation = () => {
                   src={
                     user.user_metadata.avatarUrl !== ''
                       ? user.user_metadata.avatarUrl
-                      : DefaultAvatar2x.src
+                      : DefaultAvatar2x
                   }
                   srcSet={imageSrcSet}
                   alt=""

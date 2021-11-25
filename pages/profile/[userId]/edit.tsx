@@ -1,7 +1,4 @@
 import * as React from 'react'
-import DefaultAvatar2x from '@assets/DefaultAvatar2x.jpg'
-import DefaultAvatar3x from '@assets/DefaultAvatar3x.jpg'
-import DefaultAvatar4x from '@assets/DefaultAvatar4x.jpg'
 import { CloudIcon } from '@icons/Cloud'
 import { toRem } from '@lib/helpers'
 import {
@@ -9,6 +6,9 @@ import {
   SROnlyStyles,
   commonButtonActiveStyles,
   fadeInAnimation,
+  DefaultAvatar2x,
+  DefaultAvatar3x,
+  DefaultAvatar4x,
 } from '@theme/shared'
 import { styled } from 'stitches.config'
 import { useRouter } from 'next/router'
@@ -253,11 +253,11 @@ const ProfileEdit = () => {
   }, [user, setFormState])
 
   const currentAuthUserAvatar = currentAuthUser?.user_metadata.avatarUrl
-  const imageSrcSet = `${DefaultAvatar2x.src} 300w, ${DefaultAvatar3x.src} 768w, ${DefaultAvatar4x.src} 1280w`
+  const imageSrcSet = `${DefaultAvatar2x} 300w, ${DefaultAvatar3x} 768w, ${DefaultAvatar4x} 1280w`
   const imageAlt =
     currentAuthUserAvatar !== '' && user ? user.fullname : 'Default Avatar'
   const imageSrc =
-    currentAuthUserAvatar !== '' ? currentAuthUserAvatar : DefaultAvatar2x.src
+    currentAuthUserAvatar !== '' ? currentAuthUserAvatar : DefaultAvatar2x
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
