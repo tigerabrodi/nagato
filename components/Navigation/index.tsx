@@ -79,6 +79,7 @@ export const Navigation = () => {
                     layout="fill"
                     objectFit="cover"
                     objectPosition="center"
+                    loading="eager"
                   />
                 </AvatarImage>
               </AvatarLink>
