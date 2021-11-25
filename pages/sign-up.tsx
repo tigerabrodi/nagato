@@ -66,19 +66,10 @@ export const SignUp = () => {
       return setIsEmailError(true)
     }
 
-    const userMetaData = {
-      data: {
-        avatarUrl: '',
-      },
-    }
-
-    const { error: signUpError, user } = await supabase.auth.signUp(
-      {
-        email,
-        password,
-      },
-      userMetaData
-    )
+    const { error: signUpError, user } = await supabase.auth.signUp({
+      email,
+      password,
+    })
 
     if (signUpError) {
       setStatus('error')
