@@ -20,28 +20,16 @@ import {
 } from './styles'
 import toast from 'react-hot-toast'
 import { DefaultAvatar4x } from '@theme/shared'
-import { User } from '@lib/types'
+import { useGetUserWithId } from 'hooks/useGetUserWithId'
 
 export const Navigation = () => {
   const { isAuthenticated } = useUserContext()
-  const [user, setUser] = React.useState<User | null>(null)
-
   const currentAuthUser = supabase.auth.user()
 
-  React.useEffect(() => {
-    const getUser = async () => {
-      if (user) return
-      if (currentAuthUser) {
-        const { data: userData } = await supabase
-          .from<User>('users')
-          .select('avatarUrl')
-          .eq('userId', currentAuthUser.id)
-          .single()
-        setUser(userData)
-      }
-    }
-    getUser()
-  }, [currentAuthUser, user])
+  const user = useGetUserWithId({
+    userId: currentAuthUser?.id,
+    selectProperties: 'avatarUrl',
+  })
 
   const signOut = () => {
     supabase.auth.signOut()

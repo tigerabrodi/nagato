@@ -17,8 +17,8 @@ import toast from 'react-hot-toast'
 import { useFormState } from 'hooks/useFormState'
 import { useHasMounted } from 'hooks/useHasMounted'
 import { useLoadingStore } from '@components/Spinner/store'
-import { User } from '@lib/types'
 import { Spinner } from '@components/Spinner'
+import { useGetUserWithId } from 'hooks/useGetUserWithId'
 
 const Main = styled('main', {
   display: 'flex',
@@ -227,8 +227,12 @@ const ProfileEdit = () => {
 
   const [avatarFile, setAvatarFile] = React.useState<File | null>(null)
   const [avatarUrl, setAvatarUrl] = React.useState<string | null>(null)
-  const [user, setUser] = React.useState<User | null>(null)
   const currentAuthUser = supabase.auth.user()
+
+  const user = useGetUserWithId({
+    userId: currentAuthUser?.id,
+    selectProperties: 'avatarUrl, fullname, tasteOfMusic',
+  })
 
   React.useEffect(() => {
     if (!currentAuthUser || !userId) return
@@ -248,21 +252,6 @@ const ProfileEdit = () => {
       })
     }
   }, [user, setFormState])
-
-  React.useEffect(() => {
-    const getUser = async () => {
-      if (user) return
-      if (currentAuthUser) {
-        const { data: userData } = await supabase
-          .from<User>('users')
-          .select('avatarUrl, fullname, tasteOfMusic')
-          .eq('userId', currentAuthUser.id)
-          .single()
-        setUser(userData)
-      }
-    }
-    getUser()
-  }, [currentAuthUser, user])
 
   const userAvatar = user?.avatarUrl
   const imageAlt = avatarUrl || userAvatar !== '' ? 'Avatar' : 'Default Avatar'
