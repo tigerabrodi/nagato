@@ -116,9 +116,12 @@ export const AvatarLink = styled('a', {
   },
 })
 
-export const AvatarImage = styled('img', {
-  width: 35,
+export const AvatarImage = styled('div', {
+  position: 'relative',
+  width: 34,
+  height: 32,
   '@tablet': {
+    height: 55,
     width: 60,
   },
 })

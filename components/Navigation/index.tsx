@@ -1,7 +1,8 @@
 import { supabase } from '@lib/client'
+import Image from 'next/image'
 import { useUserContext } from '@lib/userContext'
 import { NavLink } from './NavLink'
-import { User as SupaUser } from '@supabase/gotrue-js'
+import * as React from 'react'
 import {
   HomeLink,
   NavigationContainer,
@@ -18,39 +19,42 @@ import {
   ButtonText,
 } from './styles'
 import toast from 'react-hot-toast'
-import {
-  DefaultAvatar2x,
-  DefaultAvatar3x,
-  DefaultAvatar4x,
-} from '@theme/shared'
-
-type User =
-  | (SupaUser & {
-      user_metadata: {
-        avatarUrl: string
-      }
-    })
-  | null
+import { DefaultAvatar4x } from '@theme/shared'
+import { User } from '@lib/types'
 
 export const Navigation = () => {
   const { isAuthenticated } = useUserContext()
+  const [user, setUser] = React.useState<User | null>(null)
 
-  const user = supabase.auth.user() as User
+  const currentAuthUser = supabase.auth.user()
 
-  const imageSrcSet =
-    user?.user_metadata.avatarUrl === ''
-      ? `${DefaultAvatar2x} 300w, ${DefaultAvatar3x} 768w, ${DefaultAvatar4x} 1280w`
-      : undefined
+  React.useEffect(() => {
+    const getUser = async () => {
+      if (user) return
+      if (currentAuthUser) {
+        const { data: userData } = await supabase
+          .from<User>('users')
+          .select('avatarUrl')
+          .eq('userId', currentAuthUser.id)
+          .single()
+        setUser(userData)
+      }
+    }
+    getUser()
+  }, [currentAuthUser, user])
 
   const signOut = () => {
     supabase.auth.signOut()
     toast.success('You have successfully signed out!')
   }
 
+  const imageSrc =
+    user && user.avatarUrl !== '' ? user?.avatarUrl : DefaultAvatar4x
+
   return (
     <NavigationContainer>
       <LinksWrapper>
-        {isAuthenticated && user ? (
+        {isAuthenticated && currentAuthUser ? (
           <>
             <NavLink href="/rooms">
               <HomeLink aria-label="To Rooms">
@@ -66,17 +70,17 @@ export const Navigation = () => {
               <ButtonText>Sign Out</ButtonText>
               <Door />
             </SignOutButton>
-            <NavLink href={`/profile/${user.id}`}>
+            <NavLink href={`/profile/${currentAuthUser.id}`}>
               <AvatarLink aria-label="To Profile">
-                <AvatarImage
-                  src={
-                    user.user_metadata.avatarUrl !== ''
-                      ? user.user_metadata.avatarUrl
-                      : DefaultAvatar2x
-                  }
-                  srcSet={imageSrcSet}
-                  alt=""
-                />
+                <AvatarImage>
+                  <Image
+                    src={imageSrc}
+                    alt=""
+                    layout="fill"
+                    objectFit="cover"
+                    objectPosition="center"
+                  />
+                </AvatarImage>
               </AvatarLink>
             </NavLink>
           </>
