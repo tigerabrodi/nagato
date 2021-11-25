@@ -1,4 +1,6 @@
 import * as React from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
 import { CloudIcon } from '@icons/Cloud'
 import { toRem } from '@lib/helpers'
 import {
@@ -6,8 +8,6 @@ import {
   SROnlyStyles,
   commonButtonActiveStyles,
   fadeInAnimation,
-  DefaultAvatar2x,
-  DefaultAvatar3x,
   DefaultAvatar4x,
 } from '@theme/shared'
 import { styled } from 'stitches.config'
@@ -15,8 +15,10 @@ import { useRouter } from 'next/router'
 import { supabase } from '@lib/client'
 import toast from 'react-hot-toast'
 import { useFormState } from 'hooks/useFormState'
-import { User } from '@lib/types'
 import { useHasMounted } from 'hooks/useHasMounted'
+import { useLoadingStore } from '@components/Spinner/store'
+import { User } from '@lib/types'
+import { Spinner } from '@components/Spinner'
 
 const Main = styled('main', {
   display: 'flex',
@@ -68,7 +70,9 @@ const ImageWrapper = styled('div', {
   },
 })
 
-const Avatar = styled('img', {
+const Avatar = styled('div', {
+  animation: fadeInAnimation,
+  position: 'relative',
   width: 132,
   height: 123,
   '@tablet': {
@@ -193,8 +197,11 @@ const commonButtonStyles = {
   },
 }
 
-const CancelButton = styled('button', {
+const CancelLink = styled('a', {
   ...commonButtonStyles,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   gridArea: 'cancel',
   justifySelf: 'start',
 })
@@ -212,12 +219,15 @@ const ProfileEdit = () => {
     handleChange,
   } = useFormState({ tasteOfMusic: '' })
   const hasMounted = useHasMounted()
-  const [user, setUser] = React.useState<User | null>(null)
+  const { setStatus } = useLoadingStore()
   const {
     query: { userId },
     push,
   } = useRouter()
 
+  const [avatarFile, setAvatarFile] = React.useState<File | null>(null)
+  const [avatarUrl, setAvatarUrl] = React.useState<string | null>(null)
+  const [user, setUser] = React.useState<User | null>(null)
   const currentAuthUser = supabase.auth.user()
 
   React.useEffect(() => {
@@ -232,21 +242,6 @@ const ProfileEdit = () => {
   }, [currentAuthUser, push, userId])
 
   React.useEffect(() => {
-    const getAndSetUser = async () => {
-      if (user) return
-      if (currentAuthUser) {
-        const { data: userData } = await supabase
-          .from<User>('users')
-          .select('userId')
-          .match({ userId: currentAuthUser.id })
-          .single()
-        setUser(userData)
-      }
-    }
-    getAndSetUser()
-  }, [user, currentAuthUser])
-
-  React.useEffect(() => {
     if (user) {
       setFormState({
         tasteOfMusic: user.tasteOfMusic,
@@ -254,30 +249,146 @@ const ProfileEdit = () => {
     }
   }, [user, setFormState])
 
-  const currentAuthUserAvatar = currentAuthUser?.user_metadata.avatarUrl
-  const imageSrcSet = `${DefaultAvatar2x} 300w, ${DefaultAvatar3x} 768w, ${DefaultAvatar4x} 1280w`
-  const imageAlt =
-    currentAuthUserAvatar !== '' && user ? user.fullname : 'Default Avatar'
-  const imageSrc =
-    currentAuthUserAvatar !== '' ? currentAuthUserAvatar : DefaultAvatar2x
+  React.useEffect(() => {
+    const getUser = async () => {
+      if (user) return
+      if (currentAuthUser) {
+        const { data: userData } = await supabase
+          .from<User>('users')
+          .select('avatarUrl, fullname, tasteOfMusic')
+          .eq('userId', currentAuthUser.id)
+          .single()
+        setUser(userData)
+      }
+    }
+    getUser()
+  }, [currentAuthUser, user])
+
+  const userAvatar = user?.avatarUrl
+  const imageAlt = avatarUrl || userAvatar !== '' ? 'Avatar' : 'Default Avatar'
+  const imageSrc = avatarUrl
+    ? avatarUrl
+    : userAvatar && userAvatar !== ''
+    ? userAvatar
+    : DefaultAvatar4x
+
+  const getPublicUrlFile = (filePath: string) => {
+    const { publicURL, error: getUrlError } = supabase.storage
+      .from('avatars')
+      .getPublicUrl(filePath)
+
+    if (getUrlError) {
+      toast.error(getUrlError.message)
+      setStatus('error')
+      return
+    }
+
+    return publicURL
+  }
+
+  const uploadFile = async (filePath: string, file: File) => {
+    const { error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(filePath, file, { upsert: true })
+
+    if (uploadError) {
+      toast.error(uploadError.message)
+      setStatus('error')
+      return
+    }
+  }
+
+  const handleFileSubmission = async (file: File | null) => {
+    if (!file) {
+      return
+    }
+
+    const fileExtension = file.name.split('.').pop()
+    const fileName = `${Date.now()}${currentAuthUser!.id}.${fileExtension}`
+    const filePath = fileName
+
+    await uploadFile(filePath, file)
+
+    const publicAvatarUrl = getPublicUrlFile(filePath)
+
+    await supabase
+      .from('users')
+      .update({ avatarUrl: publicAvatarUrl })
+      .match({ userId: currentAuthUser!.id })
+  }
+
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null
+    if (!file) {
+      toast.error('You must select an image to upload.')
+      return
+    }
+    setAvatarUrl(window.URL.createObjectURL(file))
+    setAvatarFile(file)
+    toast.success(
+      'Successfully uploaded your new avatar, save to keep the changes!'
+    )
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setStatus('loading')
+
+    await handleFileSubmission(avatarFile)
+
+    const { error: updateUserError } = await supabase
+      .from('users')
+      .update({ tasteOfMusic })
+      .match({ userId: currentAuthUser!.id })
+
+    if (updateUserError) {
+      setStatus('error')
+      toast.error(updateUserError.message)
+      return
+    }
+
+    setStatus('success')
+    push(`/profile/${currentAuthUser!.id}`)
   }
 
-  if (!hasMounted) return null
+  if (!hasMounted || !user || !currentAuthUser) {
+    return (
+      <Main>
+        <Spinner />
+        <Form>
+          <ImageWrapper />
+          <Fullname>x</Fullname>
+          <TasteMusicLabel>Taste of music</TasteMusicLabel>
+          <TasteMusicTextarea />
+          <CancelLink>Cancel</CancelLink>
+          <SaveButton>Save</SaveButton>
+        </Form>
+      </Main>
+    )
+  }
 
   return (
     <Main>
       <HiddenHeadingLevelOne>Edit your profile</HiddenHeadingLevelOne>
       <Form onSubmit={handleSubmit}>
         <ImageWrapper>
-          <Avatar src={imageSrc} srcSet={imageSrcSet} alt={imageAlt} />
+          <Avatar>
+            <Image
+              src={imageSrc}
+              alt={imageAlt}
+              layout="fill"
+              objectFit="cover"
+              objectPosition="center"
+              loading="eager"
+              priority
+            />
+          </Avatar>
           <AvatarUploadHiddenInput
             type="file"
             id="upload"
-            accept="image/x-png,image/gif,image/jpeg"
-            aria-label="Upload Recipe Image"
+            accept="image/*"
+            aria-label="Upload Avatar"
+            onChange={onFileChange}
           />
           <AvatarUploadLabel htmlFor="upload">
             <CloudUpload
@@ -288,16 +399,18 @@ const ProfileEdit = () => {
             />
           </AvatarUploadLabel>
         </ImageWrapper>
-        <Fullname>Naruto Uzumaki</Fullname>
-        <TasteMusicLabel htmlFor="taste">Taste of music</TasteMusicLabel>
+        <Fullname>{user.fullname}</Fullname>
+        <TasteMusicLabel htmlFor="tasteOfMusic">Taste of music</TasteMusicLabel>
         <TasteMusicTextarea
           id="taste"
           value={tasteOfMusic}
-          name="textarea"
+          name="tasteOfMusic"
           spellCheck="false"
           onChange={(event) => handleChange(event)}
         />
-        <CancelButton type="button">Cancel</CancelButton>
+        <Link href={`/profile/${currentAuthUser.id}`} passHref>
+          <CancelLink>Cancel</CancelLink>
+        </Link>
         <SaveButton type="submit">Save</SaveButton>
       </Form>
     </Main>
