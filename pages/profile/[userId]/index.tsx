@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {
   Avatar,
+  commonProfileButtonHoverStyles,
   Fullname as SharedFullname,
   HiddenHeadingLevelOne,
   ImageWrapper,
@@ -14,7 +15,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useGetUserWithId } from 'hooks/useGetUserWithId'
 import toast from 'react-hot-toast'
-import { DefaultAvatar4x } from '@theme/shared'
+import { commonButtonActiveStyles, DefaultAvatar4x } from '@theme/shared'
 import { toRem } from '@lib/helpers'
 import { Spinner } from '@components/Spinner'
 import { MusicalNoteIcon } from '@icons/MusicalNote'
@@ -55,6 +56,9 @@ const EditLink = styled('a', {
     width: 170,
     height: 60,
     fontSize: toRem(23),
+    transition: 'all 0.3s ease-out',
+    ...commonProfileButtonHoverStyles,
+    ...commonButtonActiveStyles,
   },
 })
 
@@ -84,23 +88,20 @@ const noteStyles = {
   position: 'absolute',
   bottom: 0,
   heightWidth: 20,
-  '@tablet': {
-    heightWidth: 40,
-  },
 }
 
 const MusicalRightNote = styled(MusicalNoteIcon, {
   ...noteStyles,
   right: 0,
   transform: 'translate(-10px, -10px)',
-  '@tablet': { transform: 'translate(-20px, -20px)' },
+  '@tablet': { transform: 'translate(-20px, -20px)', heightWidth: 40 },
 })
 
 const MusicalLeftNote = styled(MusicalNoteIcon, {
   ...noteStyles,
   left: 0,
   transform: 'translate(10px, -10px)',
-  '@tablet': { transform: 'translate(20px, -20px)' },
+  '@tablet': { transform: 'translate(20px, -20px)', heightWidth: 40 },
 })
 
 export const Profile = () => {
@@ -134,11 +135,11 @@ export const Profile = () => {
               },
             }}
           />
-          <Fullname>xxx</Fullname>
-          <TasteOfMusicText>Taste of music</TasteOfMusicText>
           <Link passHref href={`/profile/${userId}/edit`}>
             <EditLink>Edit Profile</EditLink>
           </Link>
+          <MusicalRightNote id={uuidv4()} />
+          <MusicalLeftNote id={uuidv4()} />
         </Wrapper>
       </Main>
     )
