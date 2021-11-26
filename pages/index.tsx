@@ -1,4 +1,5 @@
 import { MusicalNoteIcon } from '@icons/MusicalNote'
+import { v4 as uuidv4 } from 'uuid'
 import { toRem } from '@lib/helpers'
 import { keyframes } from '@stitches/react'
 import { useRedirectAuthUsers } from 'hooks/useRedirectAuthUsers'
@@ -134,7 +135,7 @@ export const LandingPage = () => {
           else!
         </Text>
       </Wrapper>
-      <MusicalNote />
+      <MusicalNote id={uuidv4()} />
     </Main>
   )
 }
