@@ -1,11 +1,11 @@
 import * as React from 'react'
 import {
   Avatar,
-  Fullname,
+  Fullname as SharedFullname,
   HiddenHeadingLevelOne,
   ImageWrapper,
   Main,
-  Wrapper,
+  Wrapper as SharedWrapper,
 } from '@theme/sharedProfileStyles'
 import { v4 as uuidv4 } from 'uuid'
 import { styled } from 'stitches.config'
@@ -18,6 +18,13 @@ import { DefaultAvatar4x } from '@theme/shared'
 import { toRem } from '@lib/helpers'
 import { Spinner } from '@components/Spinner'
 import { MusicalNoteIcon } from '@icons/MusicalNote'
+
+const Fullname = styled(SharedFullname, {
+  '@tablet': {
+    marginTop: 20,
+    fontSize: toRem(60),
+  },
+})
 
 const TasteOfMusicText = styled('p', {
   fontWeight: '$regular',
@@ -44,15 +51,56 @@ const EditLink = styled('a', {
   width: 115,
   height: 35,
   backgroundColor: '$primary',
+  '@tablet': {
+    width: 170,
+    height: 60,
+    fontSize: toRem(23),
+  },
 })
 
-const MusicalNote = styled(MusicalNoteIcon, {
+const Wrapper = styled(SharedWrapper, {
+  display: 'flex',
+  alignItems: 'center',
+  flexDirection: 'column',
+  height: 380,
+  position: 'relative',
+  '@mobileM': {
+    bottom: 20,
+  },
+  '@tablet': {
+    bottom: 'revert',
+    width: 680,
+    height: 790,
+    paddingX: 60,
+    paddingTop: 25,
+    paddingBottom: 20,
+  },
+  '@desktop': {
+    height: 850,
+  },
+})
+
+const noteStyles = {
   position: 'absolute',
   bottom: 0,
   heightWidth: 20,
   '@tablet': {
     heightWidth: 40,
   },
+}
+
+const MusicalRightNote = styled(MusicalNoteIcon, {
+  ...noteStyles,
+  right: 0,
+  transform: 'translate(-10px, -10px)',
+  '@tablet': { transform: 'translate(-20px, -20px)' },
+})
+
+const MusicalLeftNote = styled(MusicalNoteIcon, {
+  ...noteStyles,
+  left: 0,
+  transform: 'translate(10px, -10px)',
+  '@tablet': { transform: 'translate(20px, -20px)' },
 })
 
 export const Profile = () => {
@@ -78,16 +126,14 @@ export const Profile = () => {
     return (
       <Main>
         <Spinner />
-        <Wrapper
-          css={{
-            display: 'flex',
-            alignItems: 'center',
-            flexDirection: 'column',
-            height: 380,
-            position: 'relative',
-          }}
-        >
-          <ImageWrapper />
+        <Wrapper>
+          <ImageWrapper
+            css={{
+              '@tablet': {
+                height: 365,
+              },
+            }}
+          />
           <Fullname>xxx</Fullname>
           <TasteOfMusicText>Taste of music</TasteOfMusicText>
           <Link passHref href={`/profile/${userId}/edit`}>
@@ -103,29 +149,7 @@ export const Profile = () => {
   return (
     <Main>
       <HiddenHeadingLevelOne>{user.fullname} Profile</HiddenHeadingLevelOne>
-      <Wrapper
-        css={{
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'column',
-          height: 380,
-          position: 'relative',
-          '@mobileM': {
-            bottom: 20,
-          },
-          '@tablet': {
-            bottom: 'revert',
-            width: 680,
-            height: 790,
-            paddingX: 60,
-            paddingTop: 25,
-            paddingBottom: 20,
-          },
-          '@desktop': {
-            height: 850,
-          },
-        }}
-      >
+      <Wrapper>
         <ImageWrapper
           css={{
             '@tablet': {
@@ -152,46 +176,13 @@ export const Profile = () => {
             />
           </Avatar>
         </ImageWrapper>
-        <Fullname
-          css={{
-            '@tablet': {
-              marginTop: 20,
-              fontSize: toRem(60),
-            },
-          }}
-        >
-          {user.fullname}
-        </Fullname>
+        <Fullname>{user.fullname}</Fullname>
         <TasteOfMusicText>{user.tasteOfMusic}</TasteOfMusicText>
         <Link passHref href={`/profile/${userId}/edit`}>
-          <EditLink
-            css={{
-              '@tablet': {
-                width: 170,
-                height: 60,
-                fontSize: toRem(23),
-              },
-            }}
-          >
-            Edit Profile
-          </EditLink>
+          <EditLink>Edit Profile</EditLink>
         </Link>
-        <MusicalNote
-          css={{
-            right: 0,
-            transform: 'translate(-10px, -10px)',
-            '@tablet': { transform: 'translate(-20px, -20px)' },
-          }}
-          id={uuidv4()}
-        />
-        <MusicalNote
-          css={{
-            left: 0,
-            transform: 'translate(10px, -10px)',
-            '@tablet': { transform: 'translate(20px, -20px)' },
-          }}
-          id={uuidv4()}
-        />
+        <MusicalRightNote id={uuidv4()} />
+        <MusicalLeftNote id={uuidv4()} />
       </Wrapper>
     </Main>
   )
