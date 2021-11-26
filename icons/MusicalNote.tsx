@@ -1,7 +1,7 @@
 import { Styleable } from '@lib/types'
 
 type Props = {
-  id: string
+  id?: string
 } & Styleable
 
 export const MusicalNoteIcon = ({ className, id }: Props) => (

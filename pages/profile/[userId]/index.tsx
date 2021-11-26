@@ -135,8 +135,8 @@ export const Profile = () => {
           <Link passHref href={`/profile/${userId}/edit`}>
             <EditLink>Edit Profile</EditLink>
           </Link>
-          <MusicalRightNote id={uuidv4()} />
-          <MusicalLeftNote id={uuidv4()} />
+          <MusicalRightNote />
+          <MusicalLeftNote />
         </Wrapper>
       </Main>
     )
