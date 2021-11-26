@@ -170,7 +170,7 @@ export const Profile = () => {
               alt={user.fullname}
               layout="fill"
               objectFit="cover"
-              objectPosition="center"
+              objectPosition="top center"
               loading="eager"
               priority
             />

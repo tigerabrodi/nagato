@@ -268,7 +268,7 @@ const ProfileEdit = () => {
               alt={imageAlt}
               layout="fill"
               objectFit="cover"
-              objectPosition="center"
+              objectPosition="top center"
               loading="eager"
               priority
             />

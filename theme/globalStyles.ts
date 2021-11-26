@@ -15,11 +15,6 @@ export const globalStyles = globalCss({
     margin: 0,
     padding: 0,
   },
-  img: {
-    display: 'block',
-    objectFit: 'cover',
-    objectPosition: 'center',
-  },
   'a, button': {
     cursor: 'pointer',
     textDecoration: 'none',

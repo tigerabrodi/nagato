@@ -66,7 +66,7 @@ export const Navigation = () => {
                     alt=""
                     layout="fill"
                     objectFit="cover"
-                    objectPosition="center"
+                    objectPosition="top center"
                     loading="eager"
                   />
                 </AvatarImage>
