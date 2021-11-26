@@ -79,9 +79,6 @@ const Wrapper = styled(SharedWrapper, {
     paddingTop: 25,
     paddingBottom: 20,
   },
-  '@desktop': {
-    height: 850,
-  },
 })
 
 const noteStyles = {
