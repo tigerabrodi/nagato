@@ -26,10 +26,23 @@ export const Navigation = () => {
   const { isAuthenticated } = useUserContext()
   const currentAuthUser = supabase.auth.user()
 
-  const { user } = useGetUserWithId({
+  const { user, setUser } = useGetUserWithId({
     userId: currentAuthUser?.id,
     selectProperties: 'avatarUrl',
   })
+
+  React.useEffect(() => {
+    const userOnUpdateSubscription = supabase
+      .from(`users:userId=eq.${currentAuthUser?.id}`)
+      .on('UPDATE', (payload) => {
+        setUser(payload.new)
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeSubscription(userOnUpdateSubscription)
+    }
+  }, [currentAuthUser?.id, setUser])
 
   const signOut = () => {
     supabase.auth.signOut()
