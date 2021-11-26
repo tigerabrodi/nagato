@@ -4,12 +4,15 @@ import Image from 'next/image'
 import { CloudIcon } from '@icons/Cloud'
 import { toRem } from '@lib/helpers'
 import {
-  focusStyles,
-  SROnlyStyles,
-  commonButtonActiveStyles,
-  fadeInAnimation,
-  DefaultAvatar4x,
-} from '@theme/shared'
+  Main,
+  Wrapper,
+  Fullname,
+  ImageWrapper,
+  Avatar,
+  HiddenHeadingLevelOne,
+  commonButtonStyles,
+} from '@theme/sharedProfileStyles'
+import { focusStyles, SROnlyStyles, DefaultAvatar4x } from '@theme/shared'
 import { styled } from 'stitches.config'
 import { useRouter } from 'next/router'
 import { supabase } from '@lib/client'
@@ -19,67 +22,6 @@ import { useHasMounted } from 'hooks/useHasMounted'
 import { useLoadingStore } from '@components/Spinner/store'
 import { Spinner } from '@components/Spinner'
 import { useGetUserWithId } from 'hooks/useGetUserWithId'
-
-const Main = styled('main', {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-})
-
-const HiddenHeadingLevelOne = styled('h1', SROnlyStyles)
-
-const Form = styled('form', {
-  width: 270,
-  height: 405,
-  boxShadow: '$shadowElevationLow',
-  display: 'grid',
-  paddingX: 20,
-  paddingTop: 20,
-  paddingBottom: 10,
-  alignItems: 'center',
-  justifyItems: 'center',
-  backgroundColor: '$secondary',
-  gridTemplateAreas:
-    '"image image" "fullname fullname" "label label" "textarea textarea" "cancel save"',
-  animation: fadeInAnimation,
-  '@mobileM': {
-    height: 470,
-  },
-  '@tablet': {
-    width: 680,
-    height: 790,
-    paddingX: 60,
-    paddingTop: 13,
-  },
-  '@desktop': {
-    height: 850,
-  },
-})
-
-const ImageWrapper = styled('div', {
-  gridArea: 'image',
-  width: '100%',
-  height: 158,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  position: 'relative',
-  backgroundColor: '$primary',
-  '@tablet': {
-    height: 350,
-  },
-})
-
-const Avatar = styled('div', {
-  animation: fadeInAnimation,
-  position: 'relative',
-  width: 132,
-  height: 123,
-  '@tablet': {
-    height: 288,
-    width: 350,
-  },
-})
 
 const AvatarUploadHiddenInput = styled('input', {
   ...SROnlyStyles,
@@ -115,18 +57,6 @@ const AvatarUploadLabel = styled('label', {
 })
 
 const CloudUpload = styled(CloudIcon)
-
-const Fullname = styled('h2', {
-  fontWeight: '$semiBold',
-  fontSize: toRem(24),
-  color: '$primary',
-  gridArea: 'fullname',
-  textAlign: 'center',
-  marginTop: 10,
-  '@tablet': {
-    fontSize: toRem(40),
-  },
-})
 
 const TasteMusicLabel = styled('label', {
   fontWeight: '$medium',
@@ -167,36 +97,6 @@ const TasteMusicTextarea = styled('textarea', {
   },
 })
 
-const commonButtonStyles = {
-  width: 96,
-  height: 31,
-  backgroundColor: '$primary',
-  boxShadow: '$shadowElevationLow',
-  color: '$tertiary',
-  fontWeight: '$medium',
-  fontSize: toRem(16),
-  textAlign: 'center',
-  marginTop: 15,
-  '@mobileM': {
-    marginTop: 'revert',
-    alignSelf: 'end',
-  },
-  '@tablet': {
-    width: 180,
-    height: 45,
-    fontSize: toRem(20),
-    boxShadow: '$shadowMedium',
-    transition: 'all 0.2s ease-out',
-    '&:hover': {
-      transition: 'all 0.15s ease-out',
-      transform: 'translateY(-3px) scale(1.005)',
-      color: '$secondary',
-      boxShadow: '0 4px 3px black',
-    },
-    ...commonButtonActiveStyles,
-  },
-}
-
 const CancelLink = styled('a', {
   ...commonButtonStyles,
   display: 'flex',
@@ -229,7 +129,7 @@ const ProfileEdit = () => {
   const [avatarUrl, setAvatarUrl] = React.useState<string | null>(null)
   const currentAuthUser = supabase.auth.user()
 
-  const user = useGetUserWithId({
+  const { user } = useGetUserWithId({
     userId: currentAuthUser?.id,
     selectProperties: 'avatarUrl, fullname, tasteOfMusic',
   })
@@ -337,6 +237,7 @@ const ProfileEdit = () => {
     }
 
     setStatus('success')
+    toast.success('Successfully updated your profile!')
     push(`/profile/${currentAuthUser!.id}`)
   }
 
@@ -344,14 +245,14 @@ const ProfileEdit = () => {
     return (
       <Main>
         <Spinner />
-        <Form>
+        <Wrapper>
           <ImageWrapper />
-          <Fullname>x</Fullname>
+          <Fullname>xxx</Fullname>
           <TasteMusicLabel>Taste of music</TasteMusicLabel>
           <TasteMusicTextarea />
           <CancelLink>Cancel</CancelLink>
           <SaveButton>Save</SaveButton>
-        </Form>
+        </Wrapper>
       </Main>
     )
   }
@@ -359,7 +260,7 @@ const ProfileEdit = () => {
   return (
     <Main>
       <HiddenHeadingLevelOne>Edit your profile</HiddenHeadingLevelOne>
-      <Form onSubmit={handleSubmit}>
+      <Wrapper onSubmit={handleSubmit} as="form">
         <ImageWrapper>
           <Avatar>
             <Image
@@ -401,7 +302,7 @@ const ProfileEdit = () => {
           <CancelLink>Cancel</CancelLink>
         </Link>
         <SaveButton type="submit">Save</SaveButton>
-      </Form>
+      </Wrapper>
     </Main>
   )
 }
