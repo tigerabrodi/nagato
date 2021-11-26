@@ -10,9 +10,14 @@ import {
   ImageWrapper,
   Avatar,
   HiddenHeadingLevelOne,
-  commonButtonStyles,
+  commonProfileButtonHoverStyles,
 } from '@theme/sharedProfileStyles'
-import { focusStyles, SROnlyStyles, DefaultAvatar4x } from '@theme/shared'
+import {
+  focusStyles,
+  SROnlyStyles,
+  DefaultAvatar4x,
+  commonButtonActiveStyles,
+} from '@theme/shared'
 import { styled } from 'stitches.config'
 import { useRouter } from 'next/router'
 import { supabase } from '@lib/client'
@@ -97,8 +102,33 @@ const TasteMusicTextarea = styled('textarea', {
   },
 })
 
+const commonProfileButtonStyles = {
+  width: 96,
+  height: 31,
+  backgroundColor: '$primary',
+  boxShadow: '$shadowElevationLow',
+  color: '$tertiary',
+  fontWeight: '$medium',
+  fontSize: toRem(16),
+  textAlign: 'center',
+  marginTop: 15,
+  '@mobileM': {
+    marginTop: 'revert',
+    alignSelf: 'end',
+  },
+  '@tablet': {
+    width: 180,
+    height: 45,
+    fontSize: toRem(20),
+    boxShadow: '$shadowMedium',
+    transition: 'all 0.2s ease-out',
+    ...commonProfileButtonHoverStyles,
+    ...commonButtonActiveStyles,
+  },
+}
+
 const CancelLink = styled('a', {
-  ...commonButtonStyles,
+  ...commonProfileButtonStyles,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -107,7 +137,7 @@ const CancelLink = styled('a', {
 })
 
 const SaveButton = styled('button', {
-  ...commonButtonStyles,
+  ...commonProfileButtonStyles,
   gridArea: 'save',
   justifySelf: 'end',
 })

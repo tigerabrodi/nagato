@@ -1,10 +1,6 @@
 import { toRem } from '@lib/helpers'
 import { styled } from 'stitches.config'
-import {
-  commonButtonActiveStyles,
-  fadeInAnimation,
-  SROnlyStyles,
-} from './shared'
+import { fadeInAnimation, SROnlyStyles } from './shared'
 
 export const Main = styled('main', {
   display: 'flex',
@@ -79,32 +75,11 @@ export const Fullname = styled('h2', {
   },
 })
 
-export const commonButtonStyles = {
-  width: 96,
-  height: 31,
-  backgroundColor: '$primary',
-  boxShadow: '$shadowElevationLow',
-  color: '$tertiary',
-  fontWeight: '$medium',
-  fontSize: toRem(16),
-  textAlign: 'center',
-  marginTop: 15,
-  '@mobileM': {
-    marginTop: 'revert',
-    alignSelf: 'end',
-  },
-  '@tablet': {
-    width: 180,
-    height: 45,
-    fontSize: toRem(20),
-    boxShadow: '$shadowMedium',
-    transition: 'all 0.2s ease-out',
-    '&:hover': {
-      transition: 'all 0.15s ease-out',
-      transform: 'translateY(-3px) scale(1.005)',
-      color: '$secondary',
-      boxShadow: '0 4px 3px black',
-    },
-    ...commonButtonActiveStyles,
+export const commonProfileButtonHoverStyles = {
+  '&:hover': {
+    transition: 'all 0.15s ease-out',
+    transform: 'translateY(-3px) scale(1.005)',
+    color: '$secondary',
+    boxShadow: '0 4px 3px black',
   },
 }
