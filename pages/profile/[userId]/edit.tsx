@@ -271,7 +271,7 @@ const ProfileEdit = () => {
     push(`/profile/${currentAuthUser!.id}`)
   }
 
-  if (!hasMounted || !user || !currentAuthUser) {
+  if (!hasMounted) {
     return (
       <Main>
         <Spinner />
@@ -286,6 +286,9 @@ const ProfileEdit = () => {
       </Main>
     )
   }
+
+  /* To avoid flickering */
+  const fallbackFullname = 'xxxx'
 
   return (
     <Main>
@@ -319,16 +322,16 @@ const ProfileEdit = () => {
             />
           </AvatarUploadLabel>
         </ImageWrapper>
-        <Fullname>{user.fullname}</Fullname>
+        <Fullname>{user?.fullname || fallbackFullname}</Fullname>
         <TasteMusicLabel htmlFor="tasteOfMusic">Taste of music</TasteMusicLabel>
         <TasteMusicTextarea
-          id="taste"
+          id="tasteOfMusic"
           value={tasteOfMusic}
           name="tasteOfMusic"
           spellCheck="false"
           onChange={(event) => handleChange(event)}
         />
-        <Link href={`/profile/${currentAuthUser.id}`} passHref>
+        <Link href={`/profile/${currentAuthUser?.id}`} passHref>
           <CancelLink>Cancel</CancelLink>
         </Link>
         <SaveButton type="submit">Save</SaveButton>
