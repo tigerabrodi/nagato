@@ -1,6 +1,10 @@
 import { toRem } from '@lib/helpers'
 import { styled } from 'stitches.config'
-import { fadeInAnimation, SROnlyStyles } from './shared'
+import {
+  fadeInAnimation,
+  SROnlyStyles,
+  willChangeTransformStyles,
+} from './shared'
 
 export const Main = styled('main', {
   display: 'flex',
@@ -22,6 +26,7 @@ export const Wrapper = styled('div', {
   gridTemplateAreas:
     '"image image" "fullname fullname" "label label" "textarea textarea" "cancel save"',
   animation: fadeInAnimation,
+  ...willChangeTransformStyles,
   '@mobileM': {
     height: 470,
   },
@@ -52,6 +57,7 @@ export const ImageWrapper = styled('div', {
 
 export const Avatar = styled('div', {
   animation: fadeInAnimation,
+  ...willChangeTransformStyles,
   position: 'relative',
   width: 132,
   height: 123,

@@ -4,6 +4,7 @@ import { toRem } from '@lib/helpers'
 import { keyframes } from '@stitches/react'
 import { useRedirectAuthUsers } from 'hooks/useRedirectAuthUsers'
 import { styled } from 'stitches.config'
+import { willChangeTransformStyles } from '@theme/shared'
 
 const fadeUp = keyframes({
   '0%': {
@@ -53,6 +54,7 @@ const Title = styled('h1', {
   color: '$secondary',
   fontWeight: '$bold',
   animation: fadeUpAnimation,
+  ...willChangeTransformStyles,
   '@tablet': {
     fontWeight: '$bold',
     fontSize: toRem(100),
@@ -65,6 +67,7 @@ const Subtitle = styled('h2', {
   color: '$tertiary',
   marginTop: 15,
   animation: fadeUpAnimation,
+  ...willChangeTransformStyles,
   animationDelay: '0.25s',
   '@tablet': {
     marginTop: 25,
@@ -81,6 +84,7 @@ const Text = styled('p', {
   marginTop: 10,
   color: '$tertiary',
   animation: fadeUpAnimation,
+  ...willChangeTransformStyles,
   animationDelay: '0.6s',
   '&:first-of-type': {
     marginTop: 20,
@@ -106,6 +110,7 @@ const MusicalNote = styled(MusicalNoteIcon, {
   marginTop: 30,
   filter: 'drop-shadow(0 1px 2px white)',
   animation: fadeUpAnimation,
+  ...willChangeTransformStyles,
   animationDelay: '0.7s',
   '@mobileM': {
     marginTop: 45,

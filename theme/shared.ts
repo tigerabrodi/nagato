@@ -44,3 +44,5 @@ export const fadeInAnimation = `${fadeIn} 0.75s ease-out both`
 export const DefaultAvatar2x = '/DefaultAvatar2x.jpg'
 export const DefaultAvatar3x = '/DefaultAvatar3x.jpg'
 export const DefaultAvatar4x = '/DefaultAvatar4x.jpg'
+
+export const willChangeTransformStyles = { 'will-change': 'transform' }
