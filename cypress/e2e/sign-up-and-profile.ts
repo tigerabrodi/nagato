@@ -41,7 +41,6 @@ it('Should be able to sign up, go to their profile, and edit their profile.', ()
 
   // Save changes
   cy.findByRole('button', { name: 'Save' }).click()
-  cy.findByRole('loading')
   cy.findByText('Successfully updated your profile!').should('exist')
 
   // Redirected to profile page
@@ -54,17 +53,26 @@ it('Should be able to sign up, go to their profile, and edit their profile.', ()
   cy.findByText(user.tasteOfMusic).should('exist')
 
   // Go back to edit
-  cy.findByRole('button', { name: 'Edit Profile' }).click()
+  cy.findByRole('link', { name: 'Edit Profile' }).click()
   cy.findByRole('heading', { level: 1, name: 'Edit your profile' }).should(
     'exist'
   )
 
   // Cancel edit
-  cy.findByRole('button', { name: 'Cancel' }).click()
+  cy.findByRole('link', { name: 'Cancel' }).click()
 
   // Back to profile page
   cy.findByRole('heading', {
     level: 1,
     name: `${user.fullname} Profile`,
   }).should('exist')
+
+  // Navigation profile image should not be the default avatar
+  cy.findByRole('link', { name: 'To Profile' }).within(() => {
+    cy.get('img').should(
+      'not.have.attr',
+      'src',
+      '/_next/image?url=%2FDefaultAvatar4x.jpg&w=3840&q=75'
+    )
+  })
 })
