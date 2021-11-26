@@ -33,7 +33,5 @@ export const useGetUserWithId = ({ userId, selectProperties }: Params) => {
     getUser()
   }, [selectProperties, user, userId, setStatus])
 
-  console.log('status in hook', user)
-
-  return { user, hookStatus }
+  return { user, hookStatus, setUser }
 }
