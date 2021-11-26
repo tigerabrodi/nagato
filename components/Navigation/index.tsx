@@ -26,7 +26,7 @@ export const Navigation = () => {
   const { isAuthenticated } = useUserContext()
   const currentAuthUser = supabase.auth.user()
 
-  const user = useGetUserWithId({
+  const { user } = useGetUserWithId({
     userId: currentAuthUser?.id,
     selectProperties: 'avatarUrl',
   })
