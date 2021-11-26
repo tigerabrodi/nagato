@@ -15,7 +15,11 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useGetUserWithId } from 'hooks/useGetUserWithId'
 import toast from 'react-hot-toast'
-import { commonButtonActiveStyles, DefaultAvatar4x } from '@theme/shared'
+import {
+  commonButtonActiveStyles,
+  DefaultAvatar4x,
+  willChangeTransformStyles,
+} from '@theme/shared'
 import { toRem } from '@lib/helpers'
 import { Spinner } from '@components/Spinner'
 import { MusicalNoteIcon } from '@icons/MusicalNote'
@@ -57,6 +61,7 @@ const EditLink = styled('a', {
     height: 60,
     fontSize: toRem(23),
     transition: 'all 0.3s ease-out',
+    ...willChangeTransformStyles,
     ...commonProfileButtonHoverStyles,
     ...commonButtonActiveStyles,
   },

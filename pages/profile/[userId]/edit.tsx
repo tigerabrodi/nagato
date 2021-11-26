@@ -17,6 +17,7 @@ import {
   SROnlyStyles,
   DefaultAvatar4x,
   commonButtonActiveStyles,
+  willChangeTransformStyles,
 } from '@theme/shared'
 import { styled } from 'stitches.config'
 import { useRouter } from 'next/router'
@@ -46,6 +47,7 @@ const AvatarUploadLabel = styled('label', {
     heightWidth: 40,
     transform: 'translate(-20px, -10px)',
     transition: 'transform 0.25s ease-out',
+    ...willChangeTransformStyles,
     '&:hover': {
       transition: 'all 0.15s ease-out',
       transform: 'translate(-20px, -11px)',
@@ -122,6 +124,7 @@ const commonProfileButtonStyles = {
     fontSize: toRem(20),
     boxShadow: '$shadowMedium',
     transition: 'all 0.2s ease-out',
+    ...willChangeTransformStyles,
     ...commonProfileButtonHoverStyles,
     ...commonButtonActiveStyles,
   },

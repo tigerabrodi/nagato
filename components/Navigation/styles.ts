@@ -4,7 +4,11 @@ import { DoubleMusicalNoteIcon } from '@icons/DoubleMusicalNote'
 import { DanceIcon } from '@icons/Dance'
 import { CSS } from '@stitches/react'
 import { DoorIcon } from '@icons/Door'
-import { commonButtonActiveStyles, SROnlyStyles } from '@theme/shared'
+import {
+  commonButtonActiveStyles,
+  SROnlyStyles,
+  willChangeTransformStyles,
+} from '@theme/shared'
 
 export const NavigationContainer = styled('nav', {
   position: 'sticky',
@@ -62,6 +66,7 @@ export const SignInLink = styled('a', {
     fontSize: toRem(28),
     marginRight: 60,
     transition: 'all 0.2s',
+    ...willChangeTransformStyles,
     '&:hover': {
       color: '$secondary',
       transform: 'translateY(-2px)',
@@ -80,6 +85,7 @@ export const SignUpLink = styled('a', {
     fontSize: toRem(29),
     padding: '8px 15px',
     transition: 'all 0.3s',
+    ...willChangeTransformStyles,
     '&:hover': {
       backgroundColor: '$tertiary',
       transform: 'translateY(-2px)',
@@ -107,6 +113,7 @@ export const AvatarLink = styled('a', {
     '@tablet': {
       boxShadow: '$shadowMedium',
       transition: 'all 0.3s ease-out',
+      ...willChangeTransformStyles,
       '&:hover': {
         transition: 'all 0.15s ease-out',
         transform: 'translateY(-2px)',
@@ -146,6 +153,7 @@ const commonLargeButtonStyles: CSS = {
     position: 'revert',
     transform: 'revert',
     transition: 'all 0.2s ease-out',
+    ...willChangeTransformStyles,
     '&:hover': {
       backgroundColor: '$tertiary',
       transform: 'translateY(-2px)',
