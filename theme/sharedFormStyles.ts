@@ -114,7 +114,7 @@ export const SubmitButton = styled('button', {
   '@tablet': {
     maxWidth: 320,
     height: 70,
-    fontSize: 36,
+    fontSize: toRem(36),
     marginTop: 100,
     boxShadow: '0 1px 3px black',
     transition: 'all 0.3s ease-out',
