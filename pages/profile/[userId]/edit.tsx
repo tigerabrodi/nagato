@@ -28,6 +28,7 @@ import { useHasMounted } from 'hooks/useHasMounted'
 import { useLoadingStore } from '@components/Spinner/store'
 import { Spinner } from '@components/Spinner'
 import { useGetUserWithId } from 'hooks/useGetUserWithId'
+import { useUserContext } from '@lib/userContext'
 
 const AvatarUploadHiddenInput = styled('input', {
   ...SROnlyStyles,
@@ -152,6 +153,7 @@ const ProfileEdit = () => {
     handleChange,
   } = useFormState({ tasteOfMusic: '' })
   const hasMounted = useHasMounted()
+  const { isAuthenticated } = useUserContext()
   const { setStatus } = useLoadingStore()
   const {
     query: { userId },
@@ -168,15 +170,22 @@ const ProfileEdit = () => {
   })
 
   React.useEffect(() => {
+    /* TODO Write test for this later. */
+    if (!isAuthenticated) {
+      push('/')
+      toast.error("You don't have permission to edit this profile.")
+      return
+    }
+
     if (!currentAuthUser || !userId) return
 
     /* TODO Write test for this later. */
-    if (currentAuthUser.id !== userId) {
+    if (currentAuthUser.id !== userId && isAuthenticated) {
       push('/rooms')
       toast.error("You don't have permission to edit this profile.")
       return
     }
-  }, [currentAuthUser, push, userId])
+  }, [currentAuthUser, push, userId, isAuthenticated])
 
   React.useEffect(() => {
     if (user) {
