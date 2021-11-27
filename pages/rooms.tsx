@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useHasMounted } from 'hooks/useHasMounted'
 import { styled } from 'stitches.config'
 import { CreateRoomDialog } from '@components/CreateRoomDialog'
+import { useRedirectOutUsers } from 'hooks/useRedirectOutUsers'
 
 const Main = styled('main', {
   display: 'flex',
@@ -26,6 +27,7 @@ const RoomsHeading = styled('h1', {
 })
 
 export const Rooms = () => {
+  useRedirectOutUsers()
   const dialogRef = React.useRef<HTMLDivElement>(null)
   const hasMounted = useHasMounted()
 

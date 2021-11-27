@@ -170,7 +170,6 @@ const ProfileEdit = () => {
   })
 
   React.useEffect(() => {
-    /* TODO Write test for this later. */
     if (!isAuthenticated) {
       push('/')
       toast.error("You don't have permission to edit this profile.")
@@ -179,7 +178,6 @@ const ProfileEdit = () => {
 
     if (!currentAuthUser || !userId) return
 
-    /* TODO Write test for this later. */
     if (currentAuthUser.id !== userId && isAuthenticated) {
       push('/rooms')
       toast.error("You don't have permission to edit this profile.")

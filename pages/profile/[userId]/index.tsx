@@ -23,6 +23,7 @@ import {
 import { toRem } from '@lib/helpers'
 import { Spinner } from '@components/Spinner'
 import { MusicalNoteIcon } from '@icons/MusicalNote'
+import { useRedirectOutUsers } from 'hooks/useRedirectOutUsers'
 
 const Fullname = styled(SharedFullname, {
   '@tablet': {
@@ -107,6 +108,7 @@ const MusicalLeftNote = styled(MusicalNoteIcon, {
 })
 
 export const Profile = () => {
+  useRedirectOutUsers()
   const {
     query: { userId },
     push,
@@ -118,7 +120,6 @@ export const Profile = () => {
   })
 
   React.useEffect(() => {
-    // TODO Assert later in test
     if (!user && hookStatus !== 'loading' && hookStatus !== 'idle') {
       toast.error('User was not found!')
       push('/rooms')
