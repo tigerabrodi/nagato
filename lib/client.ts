@@ -12,7 +12,7 @@ const redirectAuthenticatedUsers = async ({
 }: GetServerSidePropsContext) => {
   const { user } = await supabase.auth.api.getUserByCookie(req)
 
-  if (!user) {
+  if (user) {
     return { props: {}, redirect: { destination: '/rooms' } }
   }
 
