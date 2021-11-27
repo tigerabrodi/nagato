@@ -55,8 +55,10 @@ const Title = styled('h1', {
   fontSize: '$mobileHeading',
   color: '$secondary',
   fontWeight: '$bold',
-  animation: fadeUpAnimation,
-  ...willChangeTransformStyles,
+  '@noReducedMotion': {
+    animation: fadeUpAnimation,
+    ...willChangeTransformStyles,
+  },
   '@tablet': {
     fontWeight: '$bold',
     fontSize: toRem(100),
@@ -68,9 +70,11 @@ const Subtitle = styled('h2', {
   fontSize: toRem(19),
   color: '$tertiary',
   marginTop: 15,
-  animation: fadeUpAnimation,
-  ...willChangeTransformStyles,
-  animationDelay: '0.25s',
+  '@noReducedMotion': {
+    animation: fadeUpAnimation,
+    ...willChangeTransformStyles,
+    animationDelay: '0.25s',
+  },
   '@tablet': {
     marginTop: 25,
     fontSize: toRem(36),
@@ -85,9 +89,11 @@ const Text = styled('p', {
   textAlign: 'center',
   marginTop: 10,
   color: '$tertiary',
-  animation: fadeUpAnimation,
-  ...willChangeTransformStyles,
-  animationDelay: '0.6s',
+  '@noReducedMotion': {
+    animation: fadeUpAnimation,
+    ...willChangeTransformStyles,
+    animationDelay: '0.6s',
+  },
   '&:first-of-type': {
     marginTop: 20,
     animationDelay: '0.45s',
@@ -111,9 +117,11 @@ const MusicalNote = styled(MusicalNoteIcon, {
   heightWidth: 128,
   marginTop: 30,
   filter: 'drop-shadow(0 1px 2px white)',
-  animation: fadeUpAnimation,
-  ...willChangeTransformStyles,
-  animationDelay: '0.7s',
+  '@noReducedMotion': {
+    animation: fadeUpAnimation,
+    ...willChangeTransformStyles,
+    animationDelay: '0.7s',
+  },
   '@mobileM': {
     marginTop: 45,
   },
