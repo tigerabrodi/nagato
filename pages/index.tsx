@@ -5,7 +5,7 @@ import { keyframes } from '@stitches/react'
 import { styled } from 'stitches.config'
 import { willChangeTransformStyles } from '@theme/shared'
 import { useHasMounted } from 'hooks/useHasMounted'
-import { supabase } from '@lib/client'
+import { redirectAuthenticatedUsers } from '@lib/client'
 import { GetServerSideProps } from 'next'
 
 const fadeUp = keyframes({
@@ -126,14 +126,8 @@ const MusicalNote = styled(MusicalNoteIcon, {
   },
 })
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { user } = await supabase.auth.api.getUserByCookie(req)
-
-  if (!user) {
-    return { props: {}, redirect: { destination: '/rooms' } }
-  }
-
-  return { props: {} }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return redirectAuthenticatedUsers(context)
 }
 
 export const LandingPage = () => {

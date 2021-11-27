@@ -18,7 +18,7 @@ import { useFormState } from 'hooks/useFormState'
 import { styled } from 'stitches.config'
 import toast from 'react-hot-toast'
 import { HiddenText } from '@components/HiddenText'
-import { supabase } from '@lib/client'
+import { redirectAuthenticatedUsers, supabase } from '@lib/client'
 import { useRouter } from 'next/router'
 import { User } from '@lib/types'
 import { useLoadingStore } from '@components/Spinner/store'
@@ -38,14 +38,8 @@ const EmailErrorMessage = styled('span', {
   },
 })
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { user } = await supabase.auth.api.getUserByCookie(req)
-
-  if (!user) {
-    return { props: {}, redirect: { destination: '/rooms' } }
-  }
-
-  return { props: {} }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return redirectAuthenticatedUsers(context)
 }
 
 export const SignUp = () => {

@@ -16,19 +16,13 @@ import {
 import { useFormState } from 'hooks/useFormState'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
-import { supabase } from '@lib/client'
+import { redirectAuthenticatedUsers, supabase } from '@lib/client'
 import { HiddenText } from '@components/HiddenText'
 import { useLoadingStore } from '@components/Spinner/store'
 import { GetServerSideProps } from 'next'
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { user } = await supabase.auth.api.getUserByCookie(req)
-
-  if (!user) {
-    return { props: {}, redirect: { destination: '/rooms' } }
-  }
-
-  return { props: {} }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return redirectAuthenticatedUsers(context)
 }
 
 export const SignIn = () => {
