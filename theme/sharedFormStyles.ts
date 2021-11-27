@@ -121,7 +121,7 @@ export const SubmitButton = styled('button', {
     height: 70,
     fontSize: toRem(36),
     marginTop: 100,
-    boxShadow: '0 1px 3px black',
+    boxShadow: '$shadowMedium',
     transition: 'all 0.3s ease-out',
     '&:hover': {
       transition: 'all 0.15s ease-out',
