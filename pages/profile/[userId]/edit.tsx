@@ -200,9 +200,8 @@ const ProfileEdit = () => {
       .getPublicUrl(filePath)
 
     if (getUrlError) {
-      toast.error(getUrlError.message)
       setStatus('error')
-      return
+      return toast.error(getUrlError.message)
     }
 
     return publicURL
@@ -214,9 +213,8 @@ const ProfileEdit = () => {
       .upload(filePath, file, { upsert: true })
 
     if (uploadError) {
-      toast.error(uploadError.message)
       setStatus('error')
-      return
+      return toast.error(uploadError.message)
     }
   }
 
@@ -242,8 +240,7 @@ const ProfileEdit = () => {
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null
     if (!file) {
-      toast.error('You must select an image to upload.')
-      return
+      return toast.error('You must select an image to upload.')
     }
     setAvatarUrl(window.URL.createObjectURL(file))
     setAvatarFile(file)
@@ -265,8 +262,7 @@ const ProfileEdit = () => {
 
     if (updateUserError) {
       setStatus('error')
-      toast.error(updateUserError.message)
-      return
+      return toast.error(updateUserError.message)
     }
 
     setStatus('success')
