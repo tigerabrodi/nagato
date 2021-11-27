@@ -2,10 +2,11 @@ import { MusicalNoteIcon } from '@icons/MusicalNote'
 import { v4 as uuidv4 } from 'uuid'
 import { toRem } from '@lib/helpers'
 import { keyframes } from '@stitches/react'
-import { useRedirectAuthUsers } from 'hooks/useRedirectAuthUsers'
 import { styled } from 'stitches.config'
 import { willChangeTransformStyles } from '@theme/shared'
 import { useHasMounted } from 'hooks/useHasMounted'
+import { supabase } from '@lib/client'
+import { GetServerSideProps } from 'next'
 
 const fadeUp = keyframes({
   '0%': {
@@ -125,8 +126,17 @@ const MusicalNote = styled(MusicalNoteIcon, {
   },
 })
 
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { user } = await supabase.auth.api.getUserByCookie(req)
+
+  if (!user) {
+    return { props: {}, redirect: { destination: '/rooms' } }
+  }
+
+  return { props: {} }
+}
+
 export const LandingPage = () => {
-  useRedirectAuthUsers()
   const hasMounted = useHasMounted()
 
   if (!hasMounted) {

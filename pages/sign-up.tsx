@@ -20,9 +20,9 @@ import toast from 'react-hot-toast'
 import { HiddenText } from '@components/HiddenText'
 import { supabase } from '@lib/client'
 import { useRouter } from 'next/router'
-import { useRedirectAuthUsers } from 'hooks/useRedirectAuthUsers'
 import { User } from '@lib/types'
 import { useLoadingStore } from '@components/Spinner/store'
+import { GetServerSideProps } from 'next'
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -38,8 +38,17 @@ const EmailErrorMessage = styled('span', {
   },
 })
 
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { user } = await supabase.auth.api.getUserByCookie(req)
+
+  if (!user) {
+    return { props: {}, redirect: { destination: '/rooms' } }
+  }
+
+  return { props: {} }
+}
+
 export const SignUp = () => {
-  useRedirectAuthUsers()
   const router = useRouter()
   const { setStatus } = useLoadingStore()
   const [shouldShowPassword, setShouldShowPassword] = React.useState(false)

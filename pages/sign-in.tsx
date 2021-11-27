@@ -14,15 +14,24 @@ import {
   Label,
 } from '@theme/sharedFormStyles'
 import { useFormState } from 'hooks/useFormState'
-import { useRedirectAuthUsers } from 'hooks/useRedirectAuthUsers'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import { supabase } from '@lib/client'
 import { HiddenText } from '@components/HiddenText'
 import { useLoadingStore } from '@components/Spinner/store'
+import { GetServerSideProps } from 'next'
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { user } = await supabase.auth.api.getUserByCookie(req)
+
+  if (!user) {
+    return { props: {}, redirect: { destination: '/rooms' } }
+  }
+
+  return { props: {} }
+}
 
 export const SignIn = () => {
-  useRedirectAuthUsers()
   const router = useRouter()
   const { setStatus } = useLoadingStore()
   const [shouldShowPassword, setShouldShowPassword] = React.useState(false)
