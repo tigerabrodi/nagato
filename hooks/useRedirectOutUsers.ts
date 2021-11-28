@@ -8,7 +8,7 @@ export const useRedirectOutUsers = () => {
   const router = useRouter()
 
   React.useEffect(() => {
-    if (!isAuthenticated) {
+    if (isAuthenticated === false && isAuthenticated !== undefined) {
       toast.error('You must be logged in to view this page.')
       router.push('/')
     }

@@ -24,6 +24,7 @@ import { toRem } from '@lib/helpers'
 import { Spinner } from '@components/Spinner'
 import { MusicalNoteIcon } from '@icons/MusicalNote'
 import { useRedirectOutUsers } from 'hooks/useRedirectOutUsers'
+import { supabase } from '@lib/client'
 
 const Fullname = styled(SharedFullname, {
   '@tablet': {
@@ -114,9 +115,11 @@ export const Profile = () => {
     push,
   } = useRouter()
 
+  const currentAuthUser = supabase.auth.user()
+
   const { hookStatus, user } = useGetUserWithId({
     userId: userId as string,
-    selectProperties: 'avatarUrl, fullname, tasteOfMusic',
+    selectProperties: 'avatarUrl, fullname, tasteOfMusic, userId',
   })
 
   React.useEffect(() => {
@@ -126,7 +129,7 @@ export const Profile = () => {
     }
   }, [hookStatus, user, push])
 
-  if (!user) {
+  if (!user || !currentAuthUser) {
     return (
       <Main>
         <Spinner />
@@ -149,6 +152,8 @@ export const Profile = () => {
   }
 
   const imageSrc = user.avatarUrl !== '' ? user.avatarUrl : DefaultAvatar4x
+
+  const isOwner = currentAuthUser.id === user.userId
 
   return (
     <Main>
@@ -182,9 +187,11 @@ export const Profile = () => {
         </ImageWrapper>
         <Fullname>{user.fullname}</Fullname>
         <TasteOfMusicText>{user.tasteOfMusic}</TasteOfMusicText>
-        <Link passHref href={`/profile/${userId}/edit`}>
-          <EditLink>Edit Profile</EditLink>
-        </Link>
+        {isOwner && (
+          <Link passHref href={`/profile/${userId}/edit`}>
+            <EditLink>Edit Profile</EditLink>
+          </Link>
+        )}
         <MusicalRightNote id={uuidv4()} />
         <MusicalLeftNote id={uuidv4()} />
       </Wrapper>

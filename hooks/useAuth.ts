@@ -5,7 +5,7 @@ import { AuthChangeEvent, Session } from '@supabase/gotrue-js'
 
 export const useAuth = () => {
   const router = useRouter()
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false)
+  const [isAuthenticated, setIsAuthenticated] = React.useState<boolean>()
 
   React.useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
