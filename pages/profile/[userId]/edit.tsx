@@ -170,13 +170,13 @@ const ProfileEdit = () => {
   })
 
   React.useEffect(() => {
-    if (!isAuthenticated) {
+    if (isAuthenticated === false) {
       push('/')
       toast.error("You don't have permission to edit this profile.")
       return
     }
 
-    if (!currentAuthUser || !userId) return
+    if (!currentAuthUser) return
 
     if (currentAuthUser.id !== userId && isAuthenticated) {
       push('/rooms')
@@ -194,8 +194,8 @@ const ProfileEdit = () => {
   }, [user, setFormState])
 
   const userAvatar = user?.avatarUrl
-  const imageAlt = avatarUrl || userAvatar !== '' ? 'Avatar' : 'Default Avatar'
-  const imageSrc = avatarUrl
+  const imageName = avatarUrl || userAvatar !== '' ? 'Avatar' : 'Default Avatar'
+  const avatarImage = avatarUrl
     ? avatarUrl
     : userAvatar && userAvatar !== ''
     ? userAvatar
@@ -225,6 +225,13 @@ const ProfileEdit = () => {
     }
   }
 
+  const updateUserAvatar = async (publicAvatarUrl: string) => {
+    await supabase
+      .from('users')
+      .update({ avatarUrl: publicAvatarUrl })
+      .match({ userId: currentAuthUser!.id })
+  }
+
   const handleFileSubmission = async (file: File | null) => {
     if (!file) {
       return
@@ -235,13 +242,8 @@ const ProfileEdit = () => {
     const filePath = fileName
 
     await uploadFile(filePath, file)
-
     const publicAvatarUrl = getPublicUrlFile(filePath)
-
-    await supabase
-      .from('users')
-      .update({ avatarUrl: publicAvatarUrl })
-      .match({ userId: currentAuthUser!.id })
+    await updateUserAvatar(publicAvatarUrl!)
   }
 
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -249,11 +251,21 @@ const ProfileEdit = () => {
     if (!file) {
       return toast.error('You must select an image to upload.')
     }
+
     setAvatarUrl(window.URL.createObjectURL(file))
     setAvatarFile(file)
     toast.success(
       'Successfully uploaded your new avatar, save to keep the changes!'
     )
+  }
+
+  const updateUserTasteOfMusic = async () => {
+    const { error: updateUserError } = await supabase
+      .from('users')
+      .update({ tasteOfMusic })
+      .match({ userId: currentAuthUser!.id })
+
+    return { updateUserError }
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -262,10 +274,7 @@ const ProfileEdit = () => {
 
     await handleFileSubmission(avatarFile)
 
-    const { error: updateUserError } = await supabase
-      .from('users')
-      .update({ tasteOfMusic })
-      .match({ userId: currentAuthUser!.id })
+    const { updateUserError } = await updateUserTasteOfMusic()
 
     if (updateUserError) {
       setStatus('error')
@@ -303,8 +312,8 @@ const ProfileEdit = () => {
         <ImageWrapper>
           <Avatar>
             <Image
-              src={imageSrc}
-              alt={imageAlt}
+              src={avatarImage}
+              alt={imageName}
               layout="fill"
               objectFit="cover"
               objectPosition="top center"
