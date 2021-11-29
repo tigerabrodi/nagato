@@ -122,12 +122,14 @@ export const Profile = () => {
     selectProperties: 'avatarUrl, fullname, tasteOfMusic, userId',
   })
 
+  const hasFinishedLoading = hookStatus !== 'loading' && hookStatus !== 'idle'
+
   React.useEffect(() => {
-    if (!user && hookStatus !== 'loading' && hookStatus !== 'idle') {
+    if (!user && hasFinishedLoading) {
       toast.error('User was not found!')
       push('/rooms')
     }
-  }, [hookStatus, user, push])
+  }, [hasFinishedLoading, push, user])
 
   if (!user || !currentAuthUser) {
     return (
