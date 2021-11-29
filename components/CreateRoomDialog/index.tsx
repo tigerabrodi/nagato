@@ -23,11 +23,11 @@ type Props = {
 
 export const CreateRoomDialog = ({ dialogRef }: Props) => {
   const {
-    formState: { title, tasteOfMusic },
+    formState: { title, typeOfMusic },
     handleChange,
-  } = useFormState({ title: '', tasteOfMusic: '' })
+  } = useFormState({ title: '', typeOfMusic: '' })
 
-  const isAnyFieldEmpty = !title || !tasteOfMusic
+  const isAnyFieldEmpty = !title || !typeOfMusic
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -51,11 +51,11 @@ export const CreateRoomDialog = ({ dialogRef }: Props) => {
             name="title"
             value={title}
           />
-          <DialogLabel htmlFor="tasteOfMusic">Taste of music</DialogLabel>
+          <DialogLabel htmlFor="typeOfMusic">Type of music</DialogLabel>
           <TasteOfMusicTextarea
-            id="tasteOfMusic"
-            name="tasteOfMusic"
-            value={tasteOfMusic}
+            id="typeOfMusic"
+            name="typeOfMusic"
+            value={typeOfMusic}
             onChange={(event) => handleChange(event)}
             placeholder="Relaxing and sad anime songs."
           />
@@ -64,12 +64,12 @@ export const CreateRoomDialog = ({ dialogRef }: Props) => {
           </CreateButton>
         </Form>
         <DialogClose asChild>
-          <CloseButton>
+          <CloseButton aria-label="Close">
             <CloseIcon />
           </CloseButton>
         </DialogClose>
       </StyledDialogContent>
-      <DialogTriggerButton>
+      <DialogTriggerButton aria-label="Create Room">
         Create
         <IconWrapper>
           <RoomParty />
