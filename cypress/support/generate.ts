@@ -36,3 +36,10 @@ export const narutoTestUser = {
   roomTitle: 'Anime Vibes',
   roomTypeOfMusic: 'Relaxing and sad anime soundtracks.',
 }
+
+export const nagatoTestUser = {
+  fullname: 'nagato',
+  email: 'nagato@gmail.com',
+  password: 'nagato123',
+  tasteOfMusic: 'I like listening to dark music.',
+}
