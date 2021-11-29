@@ -19,6 +19,7 @@ import { styled } from 'stitches.config'
 import toast from 'react-hot-toast'
 import { HiddenText } from '@components/HiddenText'
 import { redirectAuthenticatedUsers, supabase } from '@lib/client'
+import { User as SupaUser } from '@supabase/gotrue-js'
 import { useRouter } from 'next/router'
 import { User } from '@lib/types'
 import { useLoadingStore } from '@components/Spinner/store'
@@ -46,13 +47,40 @@ export const SignUp = () => {
   const router = useRouter()
   const { setStatus } = useLoadingStore()
   const [shouldShowPassword, setShouldShowPassword] = React.useState(false)
+  const [isEmailError, setIsEmailError] = React.useState(false)
   const {
     formState: { email, fullname, password },
     handleChange,
   } = useFormState({ fullname: '', email: '', password: '' })
 
   const isAnyFieldEmpty = !fullname || !email || !password
-  const [isEmailError, setIsEmailError] = React.useState(false)
+
+  const signUp = async () => {
+    const { error: signUpError, user } = await supabase.auth.signUp({
+      email,
+      password,
+    })
+
+    return { signUpError, user }
+  }
+
+  const createNewUser = async (user: SupaUser) => {
+    const { error: isEmailTakenAlready } = await supabase
+      .from('users')
+      .insert([
+        {
+          fullname,
+          email,
+          userId: user.id,
+          avatarUrl: '',
+          roomId: '',
+          tasteOfMusic: '',
+        } as User,
+      ])
+      .single()
+
+    return { isEmailTakenAlready }
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -69,10 +97,7 @@ export const SignUp = () => {
       return setIsEmailError(true)
     }
 
-    const { error: signUpError, user } = await supabase.auth.signUp({
-      email,
-      password,
-    })
+    const { signUpError, user } = await signUp()
 
     if (signUpError) {
       setStatus('error')
@@ -80,19 +105,7 @@ export const SignUp = () => {
     }
 
     if (user) {
-      const { error: isEmailTakenAlready } = await supabase
-        .from('users')
-        .insert([
-          {
-            fullname,
-            email,
-            userId: user.id,
-            avatarUrl: '',
-            roomId: '',
-            tasteOfMusic: '',
-          } as User,
-        ])
-        .single()
+      const { isEmailTakenAlready } = await createNewUser(user)
 
       if (isEmailTakenAlready) {
         setStatus('error')
