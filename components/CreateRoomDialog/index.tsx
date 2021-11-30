@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { CloseIcon } from '@icons/Close'
+import { useClipboard } from 'use-clipboard-copy'
 import {
   StyledDialogContent,
   DialogTriggerButton,
@@ -19,6 +20,7 @@ import toast from 'react-hot-toast'
 import { supabase } from '@lib/client'
 import { Room } from '@lib/types'
 import { useRouter } from 'next/router'
+import { useLoadingStore } from '@components/Spinner/store'
 
 type Props = {
   dialogRef: React.RefObject<HTMLDivElement>
@@ -30,9 +32,20 @@ export const CreateRoomDialog = ({ dialogRef }: Props) => {
     handleChange,
   } = useFormState({ title: '', typeOfMusic: '' })
 
+  const { setStatus } = useLoadingStore()
+
   const router = useRouter()
   const isAnyFieldEmpty = !title || !typeOfMusic
   const currentAuthUser = supabase.auth.user()
+
+  const clipboard = useClipboard()
+
+  const copyRoomIdToClipboard = React.useCallback(
+    (roomId: string) => {
+      clipboard.copy(roomId)
+    },
+    [clipboard]
+  )
 
   const hasUserAlreadyCreatedARoom = async () => {
     const { data: room } = await supabase
@@ -59,19 +72,24 @@ export const CreateRoomDialog = ({ dialogRef }: Props) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setStatus('loading')
     if (isAnyFieldEmpty) {
+      setStatus('error')
       return toast.error('Please fill out all fields.')
     }
 
     const hasCreatedARoom = await hasUserAlreadyCreatedARoom()
 
     if (hasCreatedARoom) {
+      setStatus('error')
       return toast.error('You can only create one room at a time!')
     }
 
     const room = await createRoom()
 
     if (room) {
+      copyRoomIdToClipboard(room.id)
+      setStatus('success')
       toast.success(
         `Room ${title} have successfully been created! ID of room has been copied to clipboard!`
       )
