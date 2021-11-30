@@ -30,7 +30,7 @@ export const globalStyles = globalCss({
     boxShadow: '$shadowMedium',
   },
   'input::placeholder, textarea::placeholder': {
-    fontStyle: 'italic',
+    opacity: 0.6,
     color: 'inherit',
   },
   'textarea, input': {
