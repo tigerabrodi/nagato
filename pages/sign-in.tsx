@@ -16,16 +16,15 @@ import {
 import { useFormState } from 'hooks/useFormState'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
-import { redirectAuthenticatedUsers, supabase } from '@lib/client'
+import { supabase } from '@lib/client'
 import { HiddenText } from '@components/HiddenText'
 import { useLoadingStore } from '@components/Spinner/store'
-import { GetServerSideProps } from 'next'
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return redirectAuthenticatedUsers(context)
-}
+import { useRedirectAuthUsers } from 'hooks/useRedirectAuthUsers'
 
 export const SignIn = () => {
+  const { authHookStatus } = useRedirectAuthUsers()
+  const isLoading = authHookStatus === 'loading' || authHookStatus === 'idle'
+
   const router = useRouter()
   const { setStatus } = useLoadingStore()
   const [shouldShowPassword, setShouldShowPassword] = React.useState(false)
@@ -61,6 +60,14 @@ export const SignIn = () => {
     toast.success('You have successfully signed in!')
     setStatus('success')
     router.push('/rooms')
+  }
+
+  if (isLoading) {
+    return (
+      <Main>
+        <Wrapper />
+      </Main>
+    )
   }
 
   return (

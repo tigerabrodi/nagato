@@ -18,12 +18,12 @@ import { useFormState } from 'hooks/useFormState'
 import { styled } from 'stitches.config'
 import toast from 'react-hot-toast'
 import { HiddenText } from '@components/HiddenText'
-import { redirectAuthenticatedUsers, supabase } from '@lib/client'
+import { supabase } from '@lib/client'
 import { User as SupaUser } from '@supabase/gotrue-js'
 import { useRouter } from 'next/router'
 import { User } from '@lib/types'
 import { useLoadingStore } from '@components/Spinner/store'
-import { GetServerSideProps } from 'next'
+import { useRedirectAuthUsers } from 'hooks/useRedirectAuthUsers'
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -39,11 +39,10 @@ const EmailErrorMessage = styled('span', {
   },
 })
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return redirectAuthenticatedUsers(context)
-}
-
 export const SignUp = () => {
+  const { authHookStatus } = useRedirectAuthUsers()
+  const isLoading = authHookStatus === 'loading' || authHookStatus === 'idle'
+
   const router = useRouter()
   const { setStatus } = useLoadingStore()
   const [shouldShowPassword, setShouldShowPassword] = React.useState(false)
@@ -120,6 +119,14 @@ export const SignUp = () => {
 
   const toggleShouldShowPassword = () =>
     setShouldShowPassword(!shouldShowPassword)
+
+  if (isLoading) {
+    return (
+      <Main>
+        <Wrapper />
+      </Main>
+    )
+  }
 
   return (
     <Main>

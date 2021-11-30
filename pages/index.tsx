@@ -5,8 +5,7 @@ import { keyframes } from '@stitches/react'
 import { styled } from 'stitches.config'
 import { willChangeTransformStyles } from '@theme/shared'
 import { useHasMounted } from 'hooks/useHasMounted'
-import { redirectAuthenticatedUsers } from '@lib/client'
-import { GetServerSideProps } from 'next'
+import { useRedirectAuthUsers } from 'hooks/useRedirectAuthUsers'
 
 const fadeUp = keyframes({
   '0%': {
@@ -134,14 +133,14 @@ const MusicalNote = styled(MusicalNoteIcon, {
   },
 })
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return redirectAuthenticatedUsers(context)
-}
-
 export const LandingPage = () => {
   const hasMounted = useHasMounted()
 
-  if (!hasMounted) {
+  const { authHookStatus } = useRedirectAuthUsers()
+
+  const isLoading = authHookStatus === 'loading' || authHookStatus === 'idle'
+
+  if (!hasMounted || isLoading) {
     return (
       <Main>
         <Wrapper />
