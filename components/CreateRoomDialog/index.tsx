@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { CloseIcon } from '@icons/Close'
-import { useClipboard } from 'use-clipboard-copy'
 import {
   StyledDialogContent,
   DialogTriggerButton,
@@ -38,14 +37,9 @@ export const CreateRoomDialog = ({ dialogRef }: Props) => {
   const isAnyFieldEmpty = !title || !typeOfMusic
   const currentAuthUser = supabase.auth.user()
 
-  const clipboard = useClipboard()
-
-  const copyRoomIdToClipboard = React.useCallback(
-    (roomId: string) => {
-      clipboard.copy(roomId)
-    },
-    [clipboard]
-  )
+  const copyToClipboard = (roomId: string) => {
+    navigator.clipboard.writeText(roomId)
+  }
 
   const hasUserAlreadyCreatedARoom = async () => {
     const { data: room } = await supabase
@@ -88,7 +82,7 @@ export const CreateRoomDialog = ({ dialogRef }: Props) => {
     const room = await createRoom()
 
     if (room) {
-      copyRoomIdToClipboard(room.id)
+      copyToClipboard(room.id)
       setStatus('success')
       toast.success(
         `Room ${title} have successfully been created! ID of room has been copied to clipboard!`
