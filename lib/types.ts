@@ -11,3 +11,15 @@ export type User = {
   avatarUrl: string
   email: string
 }
+
+export type Room = {
+  id: string
+  title: string
+  typeOfMusic: string
+  owner: string
+  currentTrack?: {
+    duration: number
+    url: string
+    startedAt: number
+  }
+}
