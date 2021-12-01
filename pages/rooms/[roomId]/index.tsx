@@ -18,6 +18,7 @@ import toast from 'react-hot-toast'
 import { supabase } from '@lib/client'
 import { Room, User } from '@lib/types'
 import { Spinner } from '@components/Spinner'
+import { useLoadingStore } from '@components/Spinner/store'
 
 const Main = styled('main', {
   display: 'grid',
@@ -294,6 +295,7 @@ type Router = {
 
 export const RoomDetail = () => {
   const [room, setRoom] = React.useState<Room | null>(null)
+  const { setStatus } = useLoadingStore()
   const [roomOwner, setRoomOwner] = React.useState<User | null>(null)
   const {
     query: { roomId },
@@ -312,6 +314,7 @@ export const RoomDetail = () => {
       return
     }
 
+    setStatus('loading')
     const getCurrentRoom = async () => {
       const { data: supaRoom } = await supabase
         .from<Room>('rooms')
@@ -338,6 +341,7 @@ export const RoomDetail = () => {
       if (!supaRoom) {
         toast.success(`Room was not found!`)
         push('/rooms')
+        setStatus('error')
         return
       }
 
@@ -345,10 +349,11 @@ export const RoomDetail = () => {
 
       setRoomOwner(supaRoomOwner)
       setRoom(supaRoom)
+      setStatus('success')
     }
 
     fetchAndSetRoom()
-  }, [push, room, roomId])
+  }, [push, room, roomId, setStatus])
 
   React.useEffect(() => {
     /* Realtime needed to redirect all users in the room. We are listening to all events of rooms, and not specifically DELETE, because Supabase is messing with me ait, annoying, but ye */
@@ -426,7 +431,7 @@ export const RoomDetail = () => {
         aria-hidden="true"
         css={{ animation: hasRoomCurrentTrack ? bumpingAnimation : undefined }}
       >
-        <Play />
+        {hasRoomCurrentTrack ? <Stop /> : <Play />}
       </PlayWrapper>
       <SongText>
         {hasRoomCurrentTrack
