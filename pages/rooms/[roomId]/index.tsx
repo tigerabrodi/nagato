@@ -381,6 +381,8 @@ export const RoomDetail = () => {
   const roomOwnerAvatar =
     roomOwner.avatarUrl !== '' ? roomOwner.avatarUrl : '/DefaultAvatar4x.jpg'
 
+  const isOwner = room.owner === currentAuthUser.id
+
   return (
     <Main>
       <TitleHeading>{room.title}</TitleHeading>
@@ -403,7 +405,7 @@ export const RoomDetail = () => {
           />
         </OwnerImageWrapper>
       </OwnerWrapper>
-      {room.owner === currentAuthUser.id && (
+      {isOwner && (
         <>
           <SearchButton>
             <ButtonText>Search</ButtonText>
