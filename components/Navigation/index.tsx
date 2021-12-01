@@ -10,9 +10,7 @@ import {
   SignUpLink,
   LinksWrapper,
   DoubleMusicalNote,
-  Dance,
   SignOutButton,
-  JoinRoomButton,
   AvatarLink,
   AvatarImage,
   Door,
@@ -21,10 +19,12 @@ import {
 import toast from 'react-hot-toast'
 import { DefaultAvatar4x } from '@theme/shared'
 import { useGetUserWithId } from 'hooks/useGetUserWithId'
+import { JoinRoomDialog } from '@components/JoinRoomDialog'
 
 export const Navigation = () => {
   const { isAuthenticated } = useUserContext()
   const currentAuthUser = supabase.auth.user()
+  const joinRoomDialogRef = React.useRef<HTMLDivElement>(null)
 
   const { user, setUser } = useGetUserWithId({
     userId: currentAuthUser?.id,
@@ -63,10 +63,7 @@ export const Navigation = () => {
                 <DoubleMusicalNote />
               </HomeLink>
             </NavLink>
-            <JoinRoomButton>
-              <ButtonText>Join Room</ButtonText>
-              <Dance />
-            </JoinRoomButton>
+            <JoinRoomDialog dialogRef={joinRoomDialogRef} />
             <SignOutButton onClick={() => signOut()}>
               <ButtonText>Sign Out</ButtonText>
               <Door />

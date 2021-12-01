@@ -9,6 +9,7 @@ import {
   SROnlyStyles,
   willChangeTransformStyles,
 } from '@theme/shared'
+import { DialogTrigger } from '@components/Dialog'
 
 export const NavigationContainer = styled('nav', {
   position: 'sticky',
@@ -169,7 +170,7 @@ const commonLargeButtonStyles: CSS = {
   },
 }
 
-export const JoinRoomButton = styled('button', {
+export const JoinRoomButton = styled(DialogTrigger, {
   ...commonMobileButtonStyles,
   transform: 'translate(10px, -10px)',
   left: 0,
