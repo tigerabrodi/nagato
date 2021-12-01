@@ -61,7 +61,7 @@ it('Create room, leave and join via rooms page, paste ID into join dialog and jo
 
   // Copy ID to clipboard
   cy.findByRole('button', { name: 'Copy ID' }).click()
-  cy.findByText('ID of room has been copied to clipboard!').should('exist')
+  cy.findByText('Room ID copied to clipboard!').should('exist')
 
   // Go to rooms page
   cy.findByRole('link', { name: 'To Rooms' }).click()

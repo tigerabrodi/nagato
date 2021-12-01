@@ -8,6 +8,8 @@ import { DeleteIcon } from '@icons/Delete'
 import { PlayIcon } from '@icons/Play'
 import { StopIcon } from '@icons/Stop'
 import { CopyIcon } from '@icons/Copy'
+import { useRouter } from 'next/router'
+import toast from 'react-hot-toast'
 
 const Main = styled('main', {
   display: 'grid',
@@ -276,8 +278,21 @@ const Copy = styled(CopyIcon, {
   },
 })
 
+type Router = {
+  query: {
+    roomId: string
+  }
+}
+
 export const RoomDetail = () => {
-  const id = 'roomId'
+  const {
+    query: { roomId },
+  } = useRouter() as ReturnType<typeof useRouter> & Router
+
+  const copyRoomId = () => {
+    navigator.clipboard.writeText(roomId)
+    toast.success('Room ID copied to clipboard!')
+  }
 
   return (
     <Main>
@@ -285,7 +300,7 @@ export const RoomDetail = () => {
       <TypeOfMusicText>Relaxing and Sad Anime OSTs.</TypeOfMusicText>
       <OwnerWrapper>
         <span aria-hidden="true">By</span>
-        <Link passHref href={`/profile/${id}`}>
+        <Link passHref href={`/profile`}>
           <OwnerLink aria-label={`By Tiger Abrodi`}>Tiger Abrodi</OwnerLink>
         </Link>
         <OwnerImageWrapper>
@@ -311,7 +326,7 @@ export const RoomDetail = () => {
         <DeleteIcon />
       </DeleteButton>
       <SongText>Song of the Samurai</SongText>
-      <CopyIDButton>
+      <CopyIDButton onClick={() => copyRoomId()}>
         Copy ID
         <Copy />
       </CopyIDButton>
