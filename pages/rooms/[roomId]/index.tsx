@@ -335,16 +335,20 @@ export const RoomDetail = () => {
     const fetchAndSetRoom = async () => {
       const { supaRoom } = await getCurrentRoom()
 
-      if (supaRoom) {
-        const { supaRoomOwner } = await getRoomOwner(supaRoom)
-
-        setRoomOwner(supaRoomOwner)
-        setRoom(supaRoom)
+      if (!supaRoom) {
+        toast.success(`Room was not found!`)
+        push('/rooms')
+        return
       }
+
+      const { supaRoomOwner } = await getRoomOwner(supaRoom)
+
+      setRoomOwner(supaRoomOwner)
+      setRoom(supaRoom)
     }
 
     fetchAndSetRoom()
-  }, [room, roomId])
+  }, [push, room, roomId])
 
   React.useEffect(() => {
     const onDeleteRoomSubscription = supabase
