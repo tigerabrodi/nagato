@@ -351,6 +351,7 @@ export const RoomDetail = () => {
   }, [push, room, roomId])
 
   React.useEffect(() => {
+    /* Realtime needed to redirect all users in the room. We are listening to all events of rooms, and not specifically DELETE, because Supabase is messing with me ait, annoying, but ye */
     const onDeleteRoomSubscription = supabase
       .from<Room>('rooms')
       .on('*', (payload) => {
