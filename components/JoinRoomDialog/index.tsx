@@ -27,6 +27,7 @@ type Props = {
 }
 
 export const JoinRoomDialog = ({ dialogRef }: Props) => {
+  const closeDialogButtonRef = React.useRef<HTMLButtonElement>(null)
   const {
     formState: { roomId },
     handleChange,
@@ -39,28 +40,36 @@ export const JoinRoomDialog = ({ dialogRef }: Props) => {
   const getRoomWithId = async () => {
     const { data: room } = await supabase
       .from<Room>('rooms')
-      .select('id')
+      .select('id, title')
       .eq('id', roomId)
       .single()
 
     const doesRoomNotExist = room === null
 
-    return { doesRoomNotExist }
+    return { doesRoomNotExist, room }
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setStatus('loading')
     if (!roomId) {
       toast.error('Please enter a room id.')
+      setStatus('error')
       return
     }
 
-    const { doesRoomNotExist } = await getRoomWithId()
+    const { doesRoomNotExist, room } = await getRoomWithId()
 
     if (doesRoomNotExist) {
       toast.error('Room does not exist.')
+      setStatus('error')
       return
     }
+
+    setStatus('success')
+    closeDialogButtonRef.current!.click()
+    toast.success(`You successfully joined the room ${room!.title}!`)
+    router.push(`/rooms/${roomId}`)
   }
 
   return (
@@ -82,7 +91,7 @@ export const JoinRoomDialog = ({ dialogRef }: Props) => {
             Join
           </JoinButton>
         </Form>
-        <DialogClose asChild>
+        <DialogClose asChild ref={closeDialogButtonRef}>
           <CloseButton aria-label="Close">
             <CloseIcon />
           </CloseButton>
