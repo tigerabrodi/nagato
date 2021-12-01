@@ -19,6 +19,8 @@ import {
   JoinRoomButton,
 } from '@components/Navigation/styles'
 import toast from 'react-hot-toast'
+import { supabase } from '@lib/client'
+import { Room } from '@lib/types'
 
 type Props = {
   dialogRef: React.RefObject<HTMLDivElement>
@@ -34,10 +36,29 @@ export const JoinRoomDialog = ({ dialogRef }: Props) => {
 
   const router = useRouter()
 
+  const getRoomWithId = async () => {
+    const { data: room } = await supabase
+      .from<Room>('rooms')
+      .select('id')
+      .eq('id', roomId)
+      .single()
+
+    const doesRoomNotExist = room === null
+
+    return { doesRoomNotExist }
+  }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!roomId) {
       toast.error('Please enter a room id.')
+      return
+    }
+
+    const { doesRoomNotExist } = await getRoomWithId()
+
+    if (doesRoomNotExist) {
+      toast.error('Room does not exist.')
       return
     }
   }
