@@ -1,8 +1,13 @@
 import { styled } from 'stitches.config'
+import * as React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { toRem } from '@lib/helpers'
-import { commonButtonActiveStyles, SROnlyStyles } from '@theme/shared'
+import {
+  bumpingAnimation,
+  commonButtonActiveStyles,
+  SROnlyStyles,
+} from '@theme/shared'
 import { SearchIcon } from '@icons/Search'
 import { DeleteIcon } from '@icons/Delete'
 import { PlayIcon } from '@icons/Play'
@@ -10,6 +15,9 @@ import { StopIcon } from '@icons/Stop'
 import { CopyIcon } from '@icons/Copy'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
+import { supabase } from '@lib/client'
+import { Room, User } from '@lib/types'
+import { Spinner } from '@components/Spinner'
 
 const Main = styled('main', {
   display: 'grid',
@@ -285,27 +293,86 @@ type Router = {
 }
 
 export const RoomDetail = () => {
+  const [room, setRoom] = React.useState<Room | null>(null)
+  const [roomOwner, setRoomOwner] = React.useState<User | null>(null)
   const {
     query: { roomId },
   } = useRouter() as ReturnType<typeof useRouter> & Router
+
+  const currentAuthUser = supabase.auth.user()
 
   const copyRoomId = () => {
     navigator.clipboard.writeText(roomId)
     toast.success('Room ID copied to clipboard!')
   }
 
+  React.useEffect(() => {
+    if (room || !roomId) {
+      return
+    }
+
+    const getCurrentRoom = async () => {
+      const { data: supaRoom } = await supabase
+        .from<Room>('rooms')
+        .select('id, owner, title, typeOfMusic, currentTrack')
+        .eq('id', roomId)
+        .single()
+
+      return { supaRoom }
+    }
+
+    const getRoomOwner = async (supaRoom: Room) => {
+      console.log(supaRoom.owner)
+      const { data: supaRoomOwner } = await supabase
+        .from<User>('users')
+        .select('fullname, avatarUrl')
+        .eq('userId', supaRoom.owner)
+        .single()
+
+      return { supaRoomOwner }
+    }
+
+    const fetchAndSetRoom = async () => {
+      const { supaRoom } = await getCurrentRoom()
+
+      if (supaRoom) {
+        const { supaRoomOwner } = await getRoomOwner(supaRoom)
+
+        setRoomOwner(supaRoomOwner)
+        setRoom(supaRoom)
+      }
+    }
+
+    fetchAndSetRoom()
+  }, [room, roomId])
+
+  if (!room || !roomOwner || !currentAuthUser) {
+    return (
+      <Main>
+        <Spinner />
+      </Main>
+    )
+  }
+
+  const hasRoomCurrentTrack = Boolean(room.currentTrack)
+
+  const roomOwnerAvatar =
+    roomOwner.avatarUrl !== '' ? roomOwner.avatarUrl : '/DefaultAvatar4x.jpg'
+
   return (
     <Main>
-      <TitleHeading>Anime Vibes</TitleHeading>
-      <TypeOfMusicText>Relaxing and Sad Anime OSTs.</TypeOfMusicText>
+      <TitleHeading>{room.title}</TitleHeading>
+      <TypeOfMusicText>{room.typeOfMusic}</TypeOfMusicText>
       <OwnerWrapper>
         <span aria-hidden="true">By</span>
-        <Link passHref href={`/profile`}>
-          <OwnerLink aria-label={`By Tiger Abrodi`}>Tiger Abrodi</OwnerLink>
+        <Link passHref href={`/profile/${room.owner}`}>
+          <OwnerLink aria-label={`By ${roomOwner.fullname}`}>
+            {roomOwner.fullname}
+          </OwnerLink>
         </Link>
         <OwnerImageWrapper>
           <Image
-            src="/DefaultAvatar4x.jpg"
+            src={roomOwnerAvatar}
             alt=""
             layout="fill"
             objectFit="cover"
@@ -314,18 +381,29 @@ export const RoomDetail = () => {
           />
         </OwnerImageWrapper>
       </OwnerWrapper>
-      <SearchButton>
-        <ButtonText>Search</ButtonText>
-        <SearchIcon />
-      </SearchButton>
-      <PlayWrapper aria-hidden="true">
+      {room.owner === currentAuthUser.id && (
+        <>
+          <SearchButton>
+            <ButtonText>Search</ButtonText>
+            <SearchIcon />
+          </SearchButton>
+          <DeleteButton>
+            <ButtonText>Delete</ButtonText>
+            <DeleteIcon />
+          </DeleteButton>
+        </>
+      )}
+      <PlayWrapper
+        aria-hidden="true"
+        css={{ animation: hasRoomCurrentTrack ? bumpingAnimation : undefined }}
+      >
         <Play />
       </PlayWrapper>
-      <DeleteButton>
-        <ButtonText>Delete</ButtonText>
-        <DeleteIcon />
-      </DeleteButton>
-      <SongText>Song of the Samurai</SongText>
+      <SongText>
+        {hasRoomCurrentTrack
+          ? room.currentTrack!.name
+          : 'No song is being played.'}
+      </SongText>
       <CopyIDButton onClick={() => copyRoomId()}>
         Copy ID
         <Copy />

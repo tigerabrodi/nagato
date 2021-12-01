@@ -21,5 +21,6 @@ export type Room = {
     duration: number
     url: string
     startedAt: number
+    name: string
   }
 }
