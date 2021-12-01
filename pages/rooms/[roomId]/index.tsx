@@ -297,6 +297,7 @@ export const RoomDetail = () => {
   const [roomOwner, setRoomOwner] = React.useState<User | null>(null)
   const {
     query: { roomId },
+    push,
   } = useRouter() as ReturnType<typeof useRouter> & Router
 
   const currentAuthUser = supabase.auth.user()
@@ -322,7 +323,6 @@ export const RoomDetail = () => {
     }
 
     const getRoomOwner = async (supaRoom: Room) => {
-      console.log(supaRoom.owner)
       const { data: supaRoomOwner } = await supabase
         .from<User>('users')
         .select('fullname, avatarUrl')
@@ -345,6 +345,28 @@ export const RoomDetail = () => {
 
     fetchAndSetRoom()
   }, [room, roomId])
+
+  React.useEffect(() => {
+    const onDeleteRoomSubscription = supabase
+      .from<Room>('rooms')
+      .on('*', (payload) => {
+        const isCurrentRoomDeleteEvent =
+          payload.eventType === 'DELETE' &&
+          Number(payload.old.id) === Number(roomId)
+        if (isCurrentRoomDeleteEvent) {
+          toast.success(`Room ${room!.title} was deleted!`)
+          push('/rooms')
+        }
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeSubscription(onDeleteRoomSubscription)
+    }
+  }, [push, room, roomId])
+
+  const deleteRoom = async () =>
+    await supabase.from<Room>('rooms').delete().eq('id', roomId).single()
 
   if (!room || !roomOwner || !currentAuthUser) {
     return (
@@ -387,7 +409,7 @@ export const RoomDetail = () => {
             <ButtonText>Search</ButtonText>
             <SearchIcon />
           </SearchButton>
-          <DeleteButton>
+          <DeleteButton onClick={() => deleteRoom()}>
             <ButtonText>Delete</ButtonText>
             <DeleteIcon />
           </DeleteButton>
