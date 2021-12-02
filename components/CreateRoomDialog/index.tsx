@@ -20,6 +20,7 @@ import { supabase } from '@lib/client'
 import { Room } from '@lib/types'
 import { useRouter } from 'next/router'
 import { useLoadingStore } from '@components/Spinner/store'
+import { useGetUserWithId } from 'hooks/useGetUserWithId'
 
 type Props = {
   dialogRef: React.RefObject<HTMLDivElement>
@@ -36,6 +37,11 @@ export const CreateRoomDialog = ({ dialogRef }: Props) => {
   const router = useRouter()
   const isAnyFieldEmpty = !title || !typeOfMusic
   const currentAuthUser = supabase.auth.user()
+
+  const { user } = useGetUserWithId({
+    selectProperties: 'fullname',
+    userId: currentAuthUser?.id,
+  })
 
   const copyToClipboard = (roomId: string) => {
     navigator.clipboard.writeText(roomId)
@@ -58,6 +64,7 @@ export const CreateRoomDialog = ({ dialogRef }: Props) => {
         title,
         typeOfMusic,
         owner: currentAuthUser!.id,
+        ownerFullname: user?.fullname,
       } as Room)
       .single()
 

@@ -17,6 +17,7 @@ export type Room = {
   title: string
   typeOfMusic: string
   owner: string
+  ownerFullname: string
   currentTrack?: {
     duration: number
     url: string
