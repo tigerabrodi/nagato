@@ -27,7 +27,7 @@ type Props = {
 }
 
 export const JoinRoomDialog = ({ dialogRef }: Props) => {
-  const closeDialogButtonRef = React.useRef<HTMLButtonElement>(null)
+  const [isOpen, setIsOpen] = React.useState(false)
   const {
     formState: { roomId },
     handleChange,
@@ -67,13 +67,13 @@ export const JoinRoomDialog = ({ dialogRef }: Props) => {
     }
 
     setStatus('success')
-    closeDialogButtonRef.current!.click()
+    setIsOpen(false)
     toast.success(`You successfully joined the room ${room!.title}!`)
     router.push(`/rooms/${roomId}`)
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <StyledDialogContent ref={dialogRef}>
         <DialogTitle asChild>
           <DialogHeading>Join Room</DialogHeading>
@@ -91,7 +91,7 @@ export const JoinRoomDialog = ({ dialogRef }: Props) => {
             Join
           </JoinButton>
         </Form>
-        <DialogClose asChild ref={closeDialogButtonRef}>
+        <DialogClose asChild>
           <CloseButton aria-label="Close">
             <CloseIcon />
           </CloseButton>
