@@ -318,7 +318,7 @@ export const RoomDetail = () => {
     const getCurrentRoom = async () => {
       const { data: supaRoom } = await supabase
         .from<Room>('rooms')
-        .select('id, owner, title, typeOfMusic, currentTrack')
+        .select('id, owner, ownerFullname, title, typeOfMusic, currentTrack')
         .eq('id', roomId)
         .single()
 
@@ -328,7 +328,7 @@ export const RoomDetail = () => {
     const getRoomOwner = async (supaRoom: Room) => {
       const { data: supaRoomOwner } = await supabase
         .from<User>('users')
-        .select('fullname, avatarUrl')
+        .select('avatarUrl')
         .eq('userId', supaRoom.owner)
         .single()
 
@@ -400,8 +400,8 @@ export const RoomDetail = () => {
       <OwnerWrapper>
         <span aria-hidden="true">By</span>
         <Link passHref href={`/profile/${room.owner}`}>
-          <OwnerLink aria-label={`By ${roomOwner.fullname}`}>
-            {roomOwner.fullname}
+          <OwnerLink aria-label={`By ${room.ownerFullname}`}>
+            {room.ownerFullname}
           </OwnerLink>
         </Link>
         <OwnerImageWrapper>
