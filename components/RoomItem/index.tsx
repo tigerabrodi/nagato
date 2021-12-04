@@ -21,7 +21,7 @@ export const RoomItem = ({ room }: Props) => {
       <RoomItemHeading>{room.title}</RoomItemHeading>
       <RoomItemTypeMusicText>{room.typeOfMusic}</RoomItemTypeMusicText>
       <Link passHref href={`/rooms/${room.id}`}>
-        <RoomJoinLink>Join</RoomJoinLink>
+        <RoomJoinLink aria-label={`Join room ${room.title}`}>Join</RoomJoinLink>
       </Link>
       <Link passHref href={`/profile/${room.owner}`}>
         <RoomAuthorLink>by {room.ownerFullname}</RoomAuthorLink>
