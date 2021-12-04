@@ -5,7 +5,7 @@ beforeEach(() => {
   cy.visit('/sign-in')
 })
 
-it('Create room, leave and join via rooms page, paste ID into join dialog and join room.', () => {
+it('Create room, leave and join via rooms page.', () => {
   const { email, fullname, password, roomTypeOfMusic, roomTitle } =
     narutoTestUser
 
@@ -31,10 +31,9 @@ it('Create room, leave and join via rooms page, paste ID into join dialog and jo
   cy.findByRole('heading', { level: 1, name: roomTitle }).should('exist')
   cy.findByText(roomTypeOfMusic).should('exist')
   cy.findByRole('link', { name: `By ${fullname}` }).should('exist')
-  cy.findByRole('img', { name: fullname }).should('exist')
 
   // Currently no song should be playing
-  cy.findByText('Currently no song is being played.').should('exist')
+  cy.findByText('No song is being played.').should('exist')
 
   // Authorized buttons should be visible
   cy.findByRole('button', { name: 'Search' }).should('exist')
@@ -49,7 +48,7 @@ it('Create room, leave and join via rooms page, paste ID into join dialog and jo
   // Find the room as item to join
   cy.findByRole('heading', { level: 2, name: roomTitle }).should('exist')
   cy.findByText(roomTypeOfMusic).should('exist')
-  cy.findByRole('link', { name: `By ${fullname}` }).should('exist')
+  cy.findByRole('link', { name: `by ${fullname}` }).should('exist')
 
   // Join the room
   cy.findByRole('link', {
@@ -62,21 +61,6 @@ it('Create room, leave and join via rooms page, paste ID into join dialog and jo
   // Copy ID to clipboard
   cy.findByRole('button', { name: 'Copy ID' }).click()
   cy.findByText('Room ID copied to clipboard!').should('exist')
-
-  // Go to rooms page
-  cy.findByRole('link', { name: 'To Rooms' }).click()
-
-  // Join the room via dialog
-  cy.findByRole('button', { name: 'Join Room' }).click()
-  cy.findByRole('dialog', { name: 'Join Room' }).within(() => {
-    cy.findByLabelText('Room ID').focus().trigger('paste')
-    cy.findByRole('button', { name: 'Join' }).click()
-  })
-
-  // Toast to appear when joining a room
-  cy.findByText(`You successfully joined the room ${roomTitle}!`).should(
-    'exist'
-  )
 
   // Delete the room
   cy.findByRole('button', { name: 'Delete' }).click()
