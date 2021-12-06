@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Dialog, DialogClose, DialogTitle } from '@components/Dialog'
 import { CloseButton } from '@components/JoinRoomDialog/styles'
-import { SpinnerSVG } from '@components/Spinner'
 import { CloseIcon } from '@icons/Close'
+import { SpinnerSVG } from '@components/Spinner'
 import { PlayIcon } from '@icons/Play'
 import { SearchIcon } from '@icons/Search'
 import { useFormState } from 'hooks/useFormState'
@@ -23,6 +23,7 @@ import {
   Clock,
   Time,
   SearchInput,
+  FirstSearchSpinner,
 } from './styles'
 
 type Props = {
@@ -52,6 +53,9 @@ export const SearchSongDialog = ({ dialogRef, children }: Props) => {
   return (
     <Dialog>
       <StyledDialogContent ref={dialogRef}>
+        {status === 'firstLoading' && (
+          <FirstSearchSpinner ariaLabel="loading" />
+        )}
         <DialogTitle asChild>
           <DialogHeading>Search</DialogHeading>
         </DialogTitle>

@@ -1,4 +1,5 @@
 import { DialogContent } from '@components/Dialog'
+import { SpinnerSVG } from '@components/Spinner'
 import { ClockIcon } from '@icons/Clock'
 import { toRem } from '@lib/helpers'
 import { SROnlyStyles } from '@theme/shared'
@@ -237,5 +238,19 @@ export const Time = styled('span', {
   paddingBottom: 5,
   '@tablet': {
     fontSize: toRem(13),
+  },
+})
+
+export const FirstSearchSpinner = styled(SpinnerSVG, {
+  position: 'absolute',
+  top: 10,
+  left: 10,
+  right: 'revert',
+  path: {
+    fill: '$primary',
+  },
+  heightWidth: 25,
+  '@tablet': {
+    heightWidth: 40,
   },
 })
