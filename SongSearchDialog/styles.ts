@@ -66,18 +66,23 @@ export const SearchButton = styled('button', {
   '@tablet': {
     width: 75,
     height: 40,
-    boxShadow: '$shadowMedium',
+    boxShadow: 'none',
     transition: 'all ease-out 0.2s',
     svg: {
       heightWidth: 25,
     },
     '&:hover': {
-      transform: 'scale(1.01) translateY(-2px)',
+      transform: 'scale(1.01) translateY(-1px)',
+      boxShadow: '0 0 3px black',
     },
     ...commonButtonActiveStyles,
   },
   '@laptop': {
     width: 90,
+    height: 50,
+    svg: {
+      heightWidth: 30,
+    },
   },
 })
 
@@ -93,6 +98,10 @@ export const SearchInput = styled('input', {
     fontSize: toRem(18),
     width: '80%',
     height: 40,
+  },
+  '@laptop': {
+    height: 50,
+    fontSize: toRem(20),
   },
   '@desktop': {
     width: '82%',
@@ -149,15 +158,13 @@ export const LoadMoreButton = styled('button', {
     fontSize: toRem(22),
     width: 170,
     height: 50,
-    boxShadow: '$shadowMedium',
     transition: '0.3s all ease-out',
     svg: {
       heightWidth: 33,
     },
     '&:hover': {
       transition: '0.15s ease-out all',
-      boxShadow: '0 2px 3px black',
-      transform: 'translateY(-1px) scale(1.01)',
+      transform: 'translateY(-1.5px) scale(1.015)',
     },
     ...commonButtonActiveStyles,
   },
