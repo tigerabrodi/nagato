@@ -19,6 +19,8 @@ import { supabase } from '@lib/client'
 import { Room, User } from '@lib/types'
 import { Spinner } from '@components/Spinner'
 import { useLoadingStore } from '@components/Spinner/store'
+import { DialogTrigger } from '@components/Dialog'
+import { SearchSongDialog } from 'SongSearchDialog'
 
 const Main = styled('main', {
   display: 'grid',
@@ -157,7 +159,7 @@ const commonButtonTabletStyles = {
   },
 }
 
-const SearchButton = styled('button', {
+const SearchButton = styled(DialogTrigger, {
   ...commonButtonMobileStyles,
   gridArea: 'search',
   ...commonButtonTabletStyles,
@@ -295,6 +297,7 @@ type Router = {
 
 export const RoomDetail = () => {
   const [room, setRoom] = React.useState<Room | null>(null)
+  const dialogRef = React.useRef<HTMLDivElement>(null)
   const { setStatus } = useLoadingStore()
   const [roomOwner, setRoomOwner] = React.useState<User | null>(null)
   const {
@@ -417,10 +420,12 @@ export const RoomDetail = () => {
       </OwnerWrapper>
       {isOwner && (
         <>
-          <SearchButton>
-            <ButtonText>Search</ButtonText>
-            <SearchIcon />
-          </SearchButton>
+          <SearchSongDialog dialogRef={dialogRef}>
+            <SearchButton>
+              <ButtonText>Search</ButtonText>
+              <SearchIcon />
+            </SearchButton>
+          </SearchSongDialog>
           <DeleteButton onClick={() => deleteRoom()}>
             <ButtonText>Delete</ButtonText>
             <DeleteIcon />
