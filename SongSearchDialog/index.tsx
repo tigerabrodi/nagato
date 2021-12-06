@@ -43,6 +43,11 @@ export const SearchSongDialog = ({ dialogRef, children }: Props) => {
     event.preventDefault()
   }
 
+  const loadMoreElementType = status === 'loading' ? 'div' : 'button'
+  const loadMoreElementLabel =
+    status === 'loading' ? 'Loading more songs' : 'Load More'
+  const loadMoreElementRole = status === 'loading' ? 'alert' : 'button'
+
   return (
     <Dialog>
       <StyledDialogContent ref={dialogRef}>
@@ -79,9 +84,9 @@ export const SearchSongDialog = ({ dialogRef, children }: Props) => {
           </SongsList>
         </SongsSection>
         <LoadMoreButton
-          as={status === 'loading' ? 'div' : 'button'}
-          aria-label={status === 'loading' ? 'Loading more songs' : 'Load More'}
-          role={status === 'loading' ? 'alert' : 'button'}
+          as={loadMoreElementType}
+          aria-label={loadMoreElementLabel}
+          role={loadMoreElementRole}
         >
           {status === 'loading' ? <SpinnerSVG /> : 'Load More'}
         </LoadMoreButton>
