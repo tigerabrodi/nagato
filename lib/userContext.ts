@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
 
 export const UserContext = createContext({
-  isAuthenticated: false,
+  isAuthenticated: undefined as boolean | undefined,
 })
 
 export const useUserContext = () => {
