@@ -64,7 +64,7 @@ export const RoomItemTypeMusicText = styled('p', {
 
 export const RoomJoinLink = styled('a', {
   width: 84,
-  height: 26,
+  height: 28,
   fontSize: toRem(16),
   fontWeight: '$semiBold',
   color: '$primary',
