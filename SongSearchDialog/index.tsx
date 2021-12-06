@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Dialog, DialogClose, DialogTitle } from '@components/Dialog'
 import { CloseButton } from '@components/JoinRoomDialog/styles'
 import { SpinnerSVG } from '@components/Spinner'
-import { Status } from '@components/Spinner/store'
 import { CloseIcon } from '@icons/Close'
 import { PlayIcon } from '@icons/Play'
 import { SearchIcon } from '@icons/Search'
@@ -31,6 +30,8 @@ type Props = {
   children: React.ReactNode
 }
 
+type Status = 'idle' | 'firstLoading' | 'success' | 'error' | 'moreLoading'
+
 export const SearchSongDialog = ({ dialogRef, children }: Props) => {
   const [status, setStatus] = React.useState<Status>('idle')
 
@@ -43,10 +44,10 @@ export const SearchSongDialog = ({ dialogRef, children }: Props) => {
     event.preventDefault()
   }
 
-  const loadMoreElementType = status === 'loading' ? 'div' : 'button'
+  const loadMoreElementType = status === 'moreLoading' ? 'div' : 'button'
   const loadMoreElementLabel =
-    status === 'loading' ? 'Loading more songs' : 'Load More'
-  const loadMoreElementRole = status === 'loading' ? 'alert' : 'button'
+    status === 'moreLoading' ? 'Loading more songs' : 'Load More'
+  const loadMoreElementRole = status === 'moreLoading' ? 'alert' : 'button'
 
   return (
     <Dialog>
@@ -88,7 +89,7 @@ export const SearchSongDialog = ({ dialogRef, children }: Props) => {
           aria-label={loadMoreElementLabel}
           role={loadMoreElementRole}
         >
-          {status === 'loading' ? <SpinnerSVG /> : 'Load More'}
+          {status === 'moreLoading' ? <SpinnerSVG /> : 'Load More'}
         </LoadMoreButton>
         <DialogClose asChild>
           <CloseButton
