@@ -2,7 +2,7 @@ import { DialogContent } from '@components/Dialog'
 import { SpinnerSVG } from '@components/Spinner'
 import { ClockIcon } from '@icons/Clock'
 import { toRem } from '@lib/helpers'
-import { SROnlyStyles } from '@theme/shared'
+import { commonButtonActiveStyles, SROnlyStyles } from '@theme/shared'
 import { styled } from 'stitches.config'
 
 export const StyledDialogContent = styled(DialogContent, {
@@ -56,6 +56,7 @@ export const SearchButton = styled('button', {
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: '$primary',
+  boxShadow: '$shadowElevationLow',
   svg: {
     heightWidth: 22,
     path: {
@@ -65,9 +66,15 @@ export const SearchButton = styled('button', {
   '@tablet': {
     width: 75,
     height: 40,
+    boxShadow: '$shadowMedium',
+    transition: 'all ease-out 0.2s',
     svg: {
       heightWidth: 25,
     },
+    '&:hover': {
+      transform: 'scale(1.01) translateY(-2px)',
+    },
+    ...commonButtonActiveStyles,
   },
   '@laptop': {
     width: 90,
@@ -142,10 +149,17 @@ export const LoadMoreButton = styled('button', {
     fontSize: toRem(22),
     width: 170,
     height: 50,
+    boxShadow: '$shadowMedium',
+    transition: '0.3s all ease-out',
     svg: {
       heightWidth: 33,
     },
-    boxShadow: '$shadowMedium',
+    '&:hover': {
+      transition: '0.15s ease-out all',
+      boxShadow: '0 2px 3px black',
+      transform: 'translateY(-1px) scale(1.01)',
+    },
+    ...commonButtonActiveStyles,
   },
 })
 
@@ -191,6 +205,15 @@ export const SongItemPlayButton = styled('button', {
     heightWidth: 18,
     '@tablet': {
       heightWidth: 24,
+      transition: 'all ease-out 0.2s',
+    },
+  },
+  '@tablet': {
+    '&:hover': {
+      svg: {
+        transform: 'scale(1.01) translateY(-1px)',
+        filter: 'brightness(50%)',
+      },
     },
   },
 })
