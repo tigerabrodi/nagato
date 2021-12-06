@@ -66,7 +66,8 @@ export const DialogLabel = styled('label', {
   },
 })
 
-const commonInputMobileStyles = {
+export const RoomIDInput = styled('input', {
+  height: 30,
   width: 210,
   paddingLeft: 10,
   fontWeight: '$medium',
@@ -74,20 +75,11 @@ const commonInputMobileStyles = {
   color: '$secondary',
   backgroundColor: '$primary',
   marginTop: 15,
-}
-
-const commonInputTabletStyles = {
-  marginTop: 20,
-  fontSize: toRem(23),
-  width: '100%',
-}
-
-export const RoomIDInput = styled('input', {
-  height: 30,
-  ...commonInputMobileStyles,
   '@tablet': {
     height: 65,
-    ...commonInputTabletStyles,
+    marginTop: 20,
+    fontSize: toRem(23),
+    width: '100%',
   },
 })
 
