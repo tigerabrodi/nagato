@@ -21,7 +21,7 @@ export const StyledDialogContent = styled(DialogContent, {
   },
   '@tablet': {
     width: '90vw',
-    height: '90vh',
+    height: '85vh',
     maxWidth: 800,
     paddingBottom: 30,
     paddingX: 135,
@@ -29,6 +29,7 @@ export const StyledDialogContent = styled(DialogContent, {
   },
   '@laptop': {
     width: '70vw',
+    height: '90vh',
     maxWidth: 1000,
   },
   '@desktop': {
@@ -183,6 +184,10 @@ export const SongsList = styled('ul', {
   },
   '@tablet': {
     marginTop: 20,
+    maxHeight: 450,
+  },
+  '@desktop': {
+    maxHeight: 520,
   },
 })
 
@@ -201,7 +206,7 @@ export const SongItemWrapper = styled('li', {
   '@tablet': {
     height: 50,
     '&:not(:first-of-type)': {
-      marginTop: 15,
+      marginTop: 30,
     },
   },
 })
