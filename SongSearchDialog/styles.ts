@@ -19,10 +19,19 @@ export const StyledDialogContent = styled(DialogContent, {
     height: 550,
   },
   '@tablet': {
-    width: '85vw',
+    width: '90vw',
+    height: '90vh',
+    maxWidth: 800,
+    paddingBottom: 30,
+    paddingX: 135,
+    paddingTop: 20,
   },
   '@laptop': {
-    width: '75vw',
+    width: '70vw',
+    maxWidth: 1000,
+  },
+  '@desktop': {
+    paddingX: 220,
   },
 })
 
@@ -31,7 +40,7 @@ export const DialogHeading = styled('h1', {
   fontSize: toRem(36),
   color: '$primary',
   '@tablet': {
-    fontSize: toRem(72),
+    fontSize: toRem(64),
   },
 })
 
@@ -52,6 +61,16 @@ export const SearchButton = styled('button', {
       fill: '$secondary',
     },
   },
+  '@tablet': {
+    width: 75,
+    height: 40,
+    svg: {
+      heightWidth: 25,
+    },
+  },
+  '@laptop': {
+    width: 90,
+  },
 })
 
 export const SearchInput = styled('input', {
@@ -62,6 +81,14 @@ export const SearchInput = styled('input', {
   fontSize: toRem(14),
   color: '$secondary',
   backgroundColor: '$primary',
+  '@tablet': {
+    fontSize: toRem(18),
+    width: '80%',
+    height: 40,
+  },
+  '@desktop': {
+    width: '82%',
+  },
 })
 
 export const Form = styled('form', {
@@ -70,6 +97,9 @@ export const Form = styled('form', {
   justifyContent: 'space-between',
   width: '100%',
   marginTop: 15,
+  '@tablet': {
+    marginTop: 25,
+  },
 })
 
 export const SongsSection = styled('section', {
@@ -78,12 +108,18 @@ export const SongsSection = styled('section', {
   flexDirection: 'column',
   alignItems: 'center',
   width: '100%',
+  '@tablet': {
+    marginTop: 65,
+  },
 })
 
 export const SongHeading = styled('h2', {
   color: '$primary',
   fontWeight: '$bold',
   fontSize: toRem(32),
+  '@tablet': {
+    fontSize: toRem(52),
+  },
 })
 
 export const LoadMoreButton = styled('button', {
@@ -101,6 +137,15 @@ export const LoadMoreButton = styled('button', {
   svg: {
     heightWidth: 27,
   },
+  '@tablet': {
+    fontSize: toRem(22),
+    width: 170,
+    height: 50,
+    svg: {
+      heightWidth: 33,
+    },
+    boxShadow: '$shadowMedium',
+  },
 })
 
 export const SongsList = styled('ul', {
@@ -112,7 +157,10 @@ export const SongsList = styled('ul', {
   flexDirection: 'column',
   marginTop: 10,
   '@mobileM': {
-    maxHeight: 260,
+    maxHeight: 400,
+  },
+  '@tablet': {
+    marginTop: 20,
   },
 })
 
@@ -128,12 +176,21 @@ export const SongItemWrapper = styled('li', {
   '&:not(:first-of-type)': {
     marginTop: 10,
   },
+  '@tablet': {
+    height: 50,
+    '&:not(:first-of-type)': {
+      marginTop: 15,
+    },
+  },
 })
 
 export const SongItemPlayButton = styled('button', {
   gridArea: 'play',
   svg: {
     heightWidth: 18,
+    '@tablet': {
+      heightWidth: 24,
+    },
   },
 })
 
@@ -144,6 +201,9 @@ export const SongItemTitle = styled('h3', {
   gridArea: 'title',
   justifySelf: 'start',
   paddingTop: 5,
+  '@tablet': {
+    fontSize: toRem(14),
+  },
 })
 
 export const SongItemAuthor = styled('p', {
@@ -153,6 +213,9 @@ export const SongItemAuthor = styled('p', {
   gridArea: 'author',
   justifySelf: 'start',
   paddingBottom: 5,
+  '@tablet': {
+    fontSize: toRem(13),
+  },
 })
 
 export const Clock = styled(ClockIcon, {
@@ -160,6 +223,9 @@ export const Clock = styled(ClockIcon, {
   heightWidth: 12,
   alignSelf: 'end',
   marginBottom: 5,
+  '@tablet': {
+    heightWidth: 18,
+  },
 })
 
 export const Time = styled('span', {
@@ -169,4 +235,7 @@ export const Time = styled('span', {
   color: '$primary',
   alignSelf: 'end',
   paddingBottom: 5,
+  '@tablet': {
+    fontSize: toRem(13),
+  },
 })

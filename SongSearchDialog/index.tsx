@@ -91,7 +91,10 @@ export const SearchSongDialog = ({ dialogRef, children }: Props) => {
           {status === 'loading' ? <SpinnerSVG /> : 'Load More'}
         </LoadMoreButton>
         <DialogClose asChild>
-          <CloseButton aria-label="Close" css={{ heightWidth: 22 }}>
+          <CloseButton
+            aria-label="Close"
+            css={{ heightWidth: 22, '@tablet': { heightWidth: 33 } }}
+          >
             <CloseIcon />
           </CloseButton>
         </DialogClose>
